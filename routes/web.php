@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes(['verify' => false]);
+Auth::routes(['verify' => true]);
 
 Route::any('verify', 'Auth\\LoginController@verify')->name('login.verify');
 
@@ -32,7 +32,7 @@ Route::any('mailbox', 'Admin\\SupportController@mailbox')->name('mailbox');
 
 Route::any('support/{action?}', 'SupportTicketController@index')->name('support.ticket');
 Route::any('helpdesk/{action?}', 'Admin\\TicketController@index')->name('support.resolution');
-Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 

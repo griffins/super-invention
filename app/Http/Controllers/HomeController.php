@@ -49,8 +49,8 @@ class HomeController extends Controller
                     'end' => $month->copy()->addMonth()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
                 (object)[
                     'name' => 'Last Month',
-                    'start' => now()->subMonth()->startOfMonth()->firstOfMonth(Carbon::SATURDAY)->endOfDay(),
-                    'end' => now()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
+                    'start' => now()->subMonth()->startOfMonth()->firstOfMonth(Carbon::SATURDAY)->startOfDay(),
+                    'end' => $month->copy()->addMonth()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
                 (object)[
                     'name' => 'This Year',
                     'start' => now()->startOfYear(),

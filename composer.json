@@ -19,7 +19,8 @@
         "league/iso3166": "^2.1",
         "paquettg/php-html-parser": "^2.0",
         "propaganistas/laravel-phone": "^4.1",
-        "sentry/sentry-laravel": "1.0.2"
+        "sentry/sentry-laravel": "1.0.2",
+      "ext-imap": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

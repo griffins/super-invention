@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Foundation\Statement\DomExtract;
+use App\Foundation\Statement\EmailExtract;
+use App\Mail\MailReader;
 use Illuminate\Console\Command;
 
 class ImportStatements extends Command
@@ -19,7 +20,7 @@ class ImportStatements extends Command
      *
      * @var string
      */
-    protected $description = 'Scrap data from meta trader statements';
+    protected $description = 'Scrap data from email statements';
 
     /**
      * Create a new command instance.
@@ -38,11 +39,10 @@ class ImportStatements extends Command
      */
     public function handle()
     {
-        $dir = env("FTP_DIR");
-        $files = files_in_dir($dir, ["htm", "html"]);
-        foreach ($files as $file) {
+        $mail = new MailReader(env('MAILBOX_USERNAME'),env('MAILBOX_PASSWORD'));
+        foreach ($mail->emailsLastTwoDays() as $email) {
             try {
-                DomExtract::process($file);
+                EmailExtract::process($email);
             } catch (\Throwable $e) {
                 report($e);
             }

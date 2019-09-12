@@ -82,42 +82,6 @@
             </div>
             <div class="row mt-3">
                 <div class="col-3">
-                    <label>Preferred Language</label>
-                    <select name="language" class="form-control">
-                        <option value="">Select Language</option>
-                        @foreach($languages as $code => $language)
-                            <option value="{{ $code }}"
-                                    @if(old('language', $client->language) == $code) selected @endif>
-                                {{ $language}}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('language'))
-                        <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $errors->first('language') }}</strong>
-                                    </span>
-                    @endif
-                </div>
-                <div class="col-3">
-                    <label>Club</label>
-                    <select name="club" class="form-control">
-                        <option value="">Select Club</option>
-                        @foreach($clubs as $club)
-                            <option value="{{ $club }}"
-                                    @if(old('club', $client->club)== $club) selected @endif>
-                                {{ $club}}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('club'))
-                        <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $errors->first('club') }}</strong>
-                                    </span>
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-3">
                     <label>Status</label>
                     <select name="status" class="form-control">
                         <option value="active">Active</option>

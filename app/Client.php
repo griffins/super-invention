@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Foundation\Statement\EmailExtract;
+use App\Foundation\Statement\TransactionExtract;
 use App\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +21,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'country_code', 'notes', 'club', 'language', 'phone_number','status'
+        'name', 'email', 'password', 'country_code', 'notes', 'club', 'language', 'phone_number', 'status'
     ];
 
     /**
@@ -83,6 +85,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         return user()->club == '*' ? $query : $query->where('club', 'regexp', sprintf("^(P)"));
     }
+
     public function tickets()
     {
         return $this->hasMany(SupportTicket::class);
@@ -101,6 +104,23 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public static function updateBalances(EmailExtract $emailExtract)
+    {
+        $balanceBefore = Transaction::query()->balance();
+        $profits = $emailExtract - $balanceBefore;
+        Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract) {
+            foreach ($clients as $client) {
+                $balance = $client->transactions->balance;
+                $transaction = new TransactionExtract();
+                $transaction->ticket = $emailExtract->mailId;
+                $transaction->item = $emailExtract->item;
+                $transaction->type = 'cycle';
+                $transaction->amount = ($balance / $balanceBefore) * $profits;
+                Transaction::fromExtract($transaction, $client);
+            }
+        });
     }
 
     /**

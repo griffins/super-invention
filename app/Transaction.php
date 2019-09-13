@@ -13,10 +13,12 @@ class Transaction extends Model
 
     public static function fromExtract(TransactionExtract $extract, Client $client)
     {
-        $transaction = static::query()
-            ->firstOrNew(['ticket' => $extract->ticket, 'amount' => $extract->amount, 'type' => $extract->type, 'item' => $extract->item, 'client_id' => $client->id]);
-        $transaction->fill((array)$extract);
-        $transaction->save();
+        if ($extract->amount != 0) {
+            $transaction = static::query()
+                ->firstOrNew(['ticket' => $extract->ticket, 'amount' => $extract->amount, 'type' => $extract->type, 'item' => $extract->item, 'client_id' => $client->id]);
+            $transaction->fill((array)$extract);
+            $transaction->save();
+        }
     }
 
     public function scopeProfit(Builder $query)

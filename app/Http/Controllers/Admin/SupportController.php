@@ -121,7 +121,7 @@ class SupportController extends Controller
                     'email' => 'required|email|unique:clients,id,' . $client->id,
                     'country_code' => 'required',
                     'status' => 'required',
-                    'commission' => 'required|min:0:max:100',
+                    'profit' => 'required|min:0:max:100',
                     'wallet' => 'required',
                 ];
                 if (request('phone')) {
@@ -130,7 +130,7 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'email', 'notes', 'wallet', 'commission', 'country_code', 'phone_number'));
+                $client->fill(request()->only('name', 'status', 'email', 'notes', 'wallet', 'profit', 'country_code', 'phone_number'));
                 $password = Str::random(6);
                 $client->password = bcrypt($password);
                 $client->save();

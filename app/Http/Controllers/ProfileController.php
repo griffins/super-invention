@@ -30,8 +30,7 @@ class ProfileController extends Controller
         });
 
         $user = auth()->user();
-        $languages = ['en' => 'English', 'th' => 'Thai'];
-        return view('auth.profile', compact('user', 'countries', 'languages'));
+        return view('auth.profile', compact('user', 'countries'));
     }
 
     public function update(Request $request)

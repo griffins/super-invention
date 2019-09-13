@@ -94,25 +94,6 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-6">
-                                        <label>Preferred Language</label>
-                                        <select name="language" class="form-control">
-                                            <option>Select Language</option>
-                                            @foreach($languages as $code => $language)
-                                                <option value="{{ $code }}"
-                                                        @if(old('language', $user->language)== $code) selected @endif>
-                                                    {{ $language}}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('language'))
-                                            <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $errors->first('language') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
                                         <button class="btn btn-primary">Update</button>
                                     </div>
                                 </div>

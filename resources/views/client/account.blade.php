@@ -68,13 +68,13 @@
                 <tbody>
                 @foreach($client->transactions()->orderByDesc('created_at')->paginate(20) as $transaction)
                     <tr>
-                        <th>
+                        <td>
                             <div class="wrap"> {{ md5($transaction->ticket) }}</div>
-                        </th>
-                        <th>{{ ucfirst( $transaction->type)}}</th>
-                        <th>{{ $transaction->item }}</th>
-                        <th>{{ currency($transaction->amount,true,8) }}</th>
-                        <th>{{ $transaction->created_at }}</th>
+                        </td>
+                        <td>{{ ucfirst( $transaction->type)}}</td>
+                        <td>{{ $transaction->item }}</td>
+                        <td>{{ currency($transaction->amount,true,8) }}</td>
+                        <td>{{ $transaction->created_at }}</td>
                     </tr>
                 @endforeach
                 </tbody>

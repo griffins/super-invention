@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class Client extends Authenticatable implements MustVerifyEmail
 {
@@ -78,9 +79,11 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public static function updateBalances(EmailExtract $emailExtract)
     {
-        $balanceBefore = Transaction::query()->where('created_at', '<=', now()->subHour(4))->balance();
+        $balanceBefore = Transaction::query()->where('created_at', '<=', now()->startOfDay())->balance();
         $profits = $emailExtract->balance - $balanceBefore;
         $master = Client::query()->find(1);
+        DB::beginTransaction();
+        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
         Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master) {
             foreach ($clients as $client) {
                 $balance = $client->transactions()->where('created_at', '<=', now()->subHour(4))->balance();
@@ -98,6 +101,7 @@ class Client extends Authenticatable implements MustVerifyEmail
                 }
             }
         });
+        DB::commit();
     }
 
     /**

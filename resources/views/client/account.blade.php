@@ -58,23 +58,23 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <td>ID</td>
-                    <td>Type</td>
-                    <td>Item</td>
-                    <td>Amount</td>
-                    <td>Date</td>
+                    <td><b>ID</b></td>
+                    <td><b>Type</b></td>
+                    <td><b>Item</b></td>
+                    <td><b>Amount</b></td>
+                    <td><b>Date</b></td>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($client->transactions()->orderByDesc('created_at')->paginate(20) as $transaction)
                     <tr>
                         <td>
-                            <div class="wrap"> {{ strtoupper( md5($transaction->ticket)) }}</div>
+                            <b> <div class="wrap"> {{ strtoupper( md5($transaction->ticket)) }}</div></b>
                         </td>
-                        <td>{{ ucfirst( $transaction->type)}}</td>
-                        <td>{{ $transaction->item }}</td>
-                        <td>{{ currency($transaction->amount,true,8) }}</td>
-                        <td>{{ $transaction->created_at }}</td>
+                        <td><b>{{ ucfirst( $transaction->type)}}</b></td>
+                        <td><b>{{ $transaction->item }}</b></td>
+                        <td><b>{{ currency($transaction->amount,true,8) }}</b></td>
+                        <td><b>{{ $transaction->created_at }}</b></td>
                     </tr>
                 @endforeach
                 </tbody>

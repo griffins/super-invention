@@ -49,19 +49,20 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <td>ID</td>
-                    <td>Item</td>
-                    <td>Amount</td>
-                    <td>Date</td>
+                    <td><b>ID</b></td>
+                    <td><b>Item</b></td>
+                    <td><b>Amount</b></td>
+                    <td><b>Date</b></td>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach(\App\AcruedAmount::query()->paginate(20) as $interest)
+
                     <tr>
-                        <td>{{ strtoupper( md5( $interest->message_id)) }}</td>
-                        <td>{{ $interest->item }}</td>
-                        <td>{{ currency( $interest->amount,true,8) }}</td>
-                        <td>{{ $interest->created_at }}</td>
+                        <td><b>{{ strtoupper( md5( $interest->message_id)) }}                    </b></td>
+                        <td><b>{{ $interest->item }}</b></td>
+                        <td><b>{{ currency( $interest->amount,true,8) }}</b></td>
+                        <td><b>{{ $interest->created_at }}</b></td>
                     </tr>
                 @endforeach
                 </tbody>

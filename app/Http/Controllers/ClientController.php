@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\Invoice;
 use App\SupportTicket;
+use App\Transaction;
 use Carbon\Carbon;
 use function request;
 
@@ -21,41 +21,17 @@ class ClientController extends Controller
     public function index(Client $client)
     {
         $types = ['General', 'Dispute', 'Financial'];
-        $month = now()->firstOfMonth(Carbon::SATURDAY)->startOfDay();
-        if ($month->greaterThan(now())) {
-            $month = now()->subMonth()->firstOfMonth(Carbon::SATURDAY)->startOfDay();
-        }
         $periods = (object)[
             (object)[
                 'name' => 'Today',
                 'start' => now()->startOfDay(),
                 'end' => now()->endOfDay()],
             (object)[
-                'name' => 'Yesterday',
-                'start' => now()->subDay()->startOfDay(),
-                'end' => now()->subDay()->endOfDay()],
-            (object)[
-                'name' => 'Current Week',
-                'start' => now()->startOfWeek(),
-                'end' => now()->endOfWeek()],
-            (object)[
-                'name' => 'Last Week',
-                'start' => now()->subWeek()->startOfWeek(),
-                'end' => now()->subWeek()->endOfWeek()],
-            (object)[
-                'name' => 'This Month',
-                'start' => $month,
-                'end' => $month->copy()->addMonth()->endOfDay()],
-//            (object)[
-//                'name' => 'Last Month',
-//                'start' => now()->subMonth()->startOfMonth(),
-//                'end' => now()->subMonth()->endOfMonth()],
-            (object)[
-                'name' => 'This Year',
-                'start' => now()->startOfYear(),
+                'name' => 'Total Profits',
+                'start' => Carbon::parse('first day of august 2019'),
                 'end' => now()->endOfYear()],
         ];
-        return view('client.profile', compact('client' , 'periods', 'types'));
+        return view('client.profile', compact('client', 'periods', 'types'));
     }
 
     public function openTicket(Client $client)
@@ -72,5 +48,13 @@ class ClientController extends Controller
         session()->put("message", "Ticket Opened");
         return redirect(route('client', compact('client')));
     }
+
+    public function transaction(Client $client)
+    {
+        $time = request('date');
+        $ticket = md5($client->email . $time);
+        $client->transactions()->save(new Transaction(['type' => request('operation'), 'amount' => request('amount'), 'item' => 'BTC', 'created_at' => $time, 'ticket' => $ticket]));
+        return redirect(route('client',compact('client')));
     }
+}
 

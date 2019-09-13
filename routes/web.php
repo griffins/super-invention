@@ -24,6 +24,7 @@ Route::post('password/change', 'ProfileController@changePassword')->name('passwo
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::post('/profile', 'ProfileController@update')->name('profile.update');
 Route::get('/clients/{client}', 'ClientController@index')->name('client');
+Route::post('/clients/{client}/transaction', 'ClientController@transaction')->name('transaction');
 Route::post('/ticket/{client}', 'ClientController@openTicket')->name('client.ticket');
 
 Route::get('reports/{name?}', 'ReportController@report')->name('report');

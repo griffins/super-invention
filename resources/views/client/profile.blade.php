@@ -104,18 +104,58 @@
             @include('client.account',['client' => $client])
         </div>
     </div>
+    <div class="modal fade" id="transaction" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('transaction',compact('client')) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Transaction</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <input type="hidden" name="operation" value="add">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="form-group">
+                            <label class="col-form-label">Amount:</label>
+                            <input type="number" name="amount" step="0.00000001" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            {{ date_picker('Date','date', now()->toDateTimeString()) }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
+
 @section('scripts')
     <script>
-        $('[data-toggle="card-collapse"]').on('click', function (e) {
-            const DIV_CARD = 'div.card';
+        function performTransaction() {
+            $('#transaction').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var operation = button.data('type');
+                var modal = $(this);
+                if (operation === 'withdraw') {
+                    modal.find('.modal-title').text('Client Withdrawal');
+                } else {
+                    modal.find('.modal-title').text('Client Deposit');
 
-            let $card = $(this).closest(DIV_CARD);
+                }
+                modal.find('.modal-content input[name=operation]').val(operation);
+            })
+        }
 
-            $card.toggleClass('card-collapsed');
-
-            e.preventDefault();
-            return false;
-        });
+        performTransaction()
     </script>
 @endsection

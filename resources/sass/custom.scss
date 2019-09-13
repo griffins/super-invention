@@ -63,7 +63,7 @@
 }
 
 
-td {
+td, th {
   max-width: 10vw;
 }
 
@@ -102,6 +102,14 @@ body, .footer, .header {
   border: none !important;
 }
 
-.header{
+.header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.9) !important;
+}
+
+.modal {
+  overflow-y: auto;
+}
+
+.modal-open {
+  overflow: auto;
 }

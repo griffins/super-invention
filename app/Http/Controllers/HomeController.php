@@ -20,42 +20,18 @@ class HomeController extends Controller
     public function index()
     {
         if (user()->role == 'admin') {
-            $month = now()->firstOfMonth(Carbon::SATURDAY)->startOfDay();
-            if ($month->greaterThan(now())) {
-                $month = now()->subMonth()->firstOfMonth(Carbon::SATURDAY)->startOfDay();
-            }
             $periods = (object)[
                 (object)[
                     'name' => 'Today',
                     'start' => now()->startOfDay(),
                     'end' => now()->endOfDay()],
                 (object)[
-                    'name' => 'Yesterday',
-                    'start' => now()->subDay()->startOfDay(),
-                    'end' => now()->subDay()->endOfDay()],
-                (object)[
-                    'name' => 'Current Week',
-                    'start' => now()->startOfWeek(),
-                    'end' => now()->endOfWeek()],
-                (object)[
-                    'name' => 'Last Week',
-                    'start' => now()->subWeek()->startOfWeek(),
-                    'end' => now()->subWeek()->endOfWeek()],
-                (object)[
-                    'name' => 'This Month',
-                    'start' => $month,
-                    'end' => $month->copy()->addMonth()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
-                (object)[
-                    'name' => 'Last Month',
-                    'start' => now()->subMonth()->startOfMonth()->firstOfMonth(Carbon::SATURDAY)->startOfDay(),
-                    'end' => $month->copy()->addMonth()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
-                (object)[
-                    'name' => 'This Year',
-                    'start' => now()->startOfYear(),
+                    'name' => 'Total Profits',
+                    'start' => Carbon::parse('first day of august 2019'),
                     'end' => now()->endOfYear()],
             ];
             $clients = Client::query();
-            $totalFund =0;
+            $totalFund = Transaction::query()->balance();
             return view('home', compact('clients', 'totalFund', 'periods'));
         } else {
             return redirect(route('client', ['client' => user()]));
@@ -64,38 +40,14 @@ class HomeController extends Controller
 
     public function clientDashboard(Client $client)
     {
-        $month = now()->firstOfMonth(Carbon::SATURDAY)->startOfDay();
-        if ($month->greaterThan(now())) {
-            $month = now()->subMonth()->firstOfMonth(Carbon::SATURDAY)->startOfDay();
-        }
         $periods = (object)[
             (object)[
                 'name' => 'Today',
                 'start' => now()->startOfDay(),
                 'end' => now()->endOfDay()],
             (object)[
-                'name' => 'Yesterday',
-                'start' => now()->subDay()->startOfDay(),
-                'end' => now()->subDay()->endOfDay()],
-            (object)[
-                'name' => 'Current Week',
-                'start' => now()->startOfWeek(),
-                'end' => now()->endOfWeek()],
-            (object)[
-                'name' => 'Last Week',
-                'start' => now()->subWeek()->startOfWeek(),
-                'end' => now()->subWeek()->endOfWeek()],
-            (object)[
-                'name' => 'This Month',
-                'start' => $month,
-                'end' => $month->copy()->addMonth()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
-            (object)[
-                'name' => 'Last Month',
-                'start' => now()->subMonth()->startOfMonth()->firstOfMonth(Carbon::SATURDAY)->endOfDay(),
-                'end' => now()->firstOfMonth(Carbon::SATURDAY)->subDay()->endOfDay()],
-            (object)[
-                'name' => 'This Year',
-                'start' => now()->startOfYear(),
+                'name' => 'Total Profits',
+                'start' => Carbon::parse('first day of august 2019'),
                 'end' => now()->endOfYear()],
         ];
 

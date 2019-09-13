@@ -130,7 +130,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Profit %</th>
-                <th class="text-center">Joined</th>
+                <th class="text-left">Joined</th>
                 <th class=""></th>
             </tr>
             </thead>
@@ -144,7 +144,7 @@
                     <td><a href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
                     <td>{{currency( $client->profits)}}</td>
-                    <td class="text-right">{{$client->created_at->format('jS M, Y')}}</td>
+                    <td class="text-left">{{$client->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">
                             <a href="javascript:void(0)" data-toggle="dropdown" class="icon" aria-expanded="false"><i

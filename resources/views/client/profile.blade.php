@@ -25,8 +25,6 @@
                         <br>
                         {{ $client->phone }}
                     </p>
-                    <i
-                            class="flag flag-{{ strtolower($client->country_code) }}"></i>
                 </div>
             </div>
             @if(user()->role=='admin')

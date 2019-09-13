@@ -45,5 +45,27 @@
                     </td>
             @endforeach
         </table>
+        <div class="card mx-3">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Item</td>
+                    <td>Amount</td>
+                    <td>Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach(\App\AcruedAmount::query()->paginate(20) as $interest)
+                    <tr>
+                        <th>{{ $interest->message_id }}</th>
+                        <th>{{ $interest->item }}</th>
+                        <th>{{ currency( $interest->amount,true,8) }}</th>
+                        <th>{{ $interest->created_at }}</th>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection

@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-3">
                     <label>Phone Number</label>
-                    <input type="text" name="phone_number" value="{{ old('phone_number',$client->phone) }}"
+                    <input type="text" name="phone_number" value="{{ old('phone_number',$client->phone_number) }}"
                            class="form-control"
                            placeholder="Phone Number">
                     @if ($errors->has('phone_number'))

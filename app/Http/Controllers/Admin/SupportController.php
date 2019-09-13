@@ -124,6 +124,7 @@ class SupportController extends Controller
                     'profits' => 'required|min:0:max:100',
                     'wallet' => 'required',
                 ];
+
                 if (request('phone_number')) {
                     $rules['phone_number'] = 'phone:country_code';
                 }

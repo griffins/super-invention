@@ -51,7 +51,7 @@ class ProfileController extends Controller
             }
 
             $this->validate($request, $rules);
-            $user->fill($request->only('name', 'email', 'country_code', 'phone_number'));
+            $user->fill($request->only('name', 'email', 'country_code', 'phone_number','wallet'));
             $user->save();
 
         } else {

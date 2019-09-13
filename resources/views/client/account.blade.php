@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-status bg-teal"></div>
     <div class="card-header">
-        <h3 class="card-title">{{ $client->wallet }}
+        <h3 class="card-title">Withdrawal Address {{ $client->wallet }}
             ({{currency( normalize( $client->transactions()->balance()),true,8)}} BTC)</h3>
         @if(user()->role=='admin')
             <div class="card-options">

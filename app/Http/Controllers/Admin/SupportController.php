@@ -17,7 +17,6 @@ use DB;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use League\ISO3166\ISO3166;
 use function request;
@@ -102,8 +101,7 @@ class SupportController extends Controller
         $countries = collect((new ISO3166())->all())->map(function ($e) {
             return (object)$e;
         });
-        $languages = ['en' => 'English', 'th' => 'Thai'];
-         $client = Client::query()->findOrNew(request('client'));
+        $client = Client::query()->findOrNew(request('client'));
         if (request()->isMethod('post')) {
             if (request('action') == 'delete') {
                 $client->accounts()->delete();
@@ -123,7 +121,8 @@ class SupportController extends Controller
                     'email' => 'required|email|unique:clients,id,' . $client->id,
                     'country_code' => 'required',
                     'status' => 'required',
-                    'commission' => 'required',
+                    'commission' => 'required|min:0:max:100',
+                    'wallet' => 'required',
                 ];
                 if (request('phone')) {
                     $rules['phone_number'] = 'phone:country_code';
@@ -131,7 +130,7 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'email', 'notes', 'commission', 'country_code', 'phone_number'));
+                $client->fill(request()->only('name', 'status', 'email', 'notes', 'wallet', 'commission', 'country_code', 'phone_number'));
                 $password = Str::random(6);
                 $client->password = bcrypt($password);
                 $client->save();
@@ -153,10 +152,10 @@ class SupportController extends Controller
             return redirect(route('support', ['section' => 'clients']))->with('message', $message);
         } else if (request()->isMethod('GET')) {
             if (request('action') == 'edit') {
-                return view('admin/clients', compact( 'client', 'countries'));
+                return view('admin/clients', compact('client', 'countries'));
             } else {
                 $clients = Client::query()->byAdminRole()->orderBy('name')->get();
-                return view('admin/clients', compact('clients',  'client', 'countries'));
+                return view('admin/clients', compact('clients', 'client', 'countries'));
             }
         }
     }
@@ -172,7 +171,7 @@ class SupportController extends Controller
         } else {
             if (request()->has('recipients')) {
                 $recipients = request('recipients');
-                return view('admin.mailbox', compact( 'recipients'));
+                return view('admin.mailbox', compact('recipients'));
             } else {
                 $recipients = base64_encode(Client::query()->pluck('email')->toJson());
                 return redirect(route('mailbox', compact('recipients')));

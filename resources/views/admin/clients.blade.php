@@ -68,7 +68,7 @@
                         </span>
                     @endif
                 </div>
-                <div class="col-5">
+                <div class="col-3">
                     <label>Phone Number</label>
                     <input type="text" name="phone_number" value="{{ old('phone_number',$client->phone) }}"
                            class="form-control"
@@ -76,6 +76,17 @@
                     @if ($errors->has('phone_number'))
                         <span class="invalid-feedback d-block" role="alert">
                             <strong>{{ $errors->first('phone_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-2">
+                    <label>Commission</label>
+                    <input type="number" name="commission" value="{{ old('commission',$client->commission) }}"
+                           class="form-control"
+                           placeholder="Commission">
+                    @if ($errors->has('commission'))
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $errors->first('commission') }}</strong>
                         </span>
                     @endif
                 </div>
@@ -96,13 +107,13 @@
                     @endif
                 </div>
                 <div class="col-5">
-                    <label>Commission</label>
-                    <input type="number" name="commission" value="{{ old('commission',$client->commission) }}"
+                    <label>Wallet Address</label>
+                    <input type="text" name="wallet" value="{{ old('wallet',$client->wallet) }}"
                            class="form-control"
-                           placeholder="Commission">
-                    @if ($errors->has('commission'))
+                           placeholder="Wallet Address">
+                    @if ($errors->has('wallet'))
                         <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('commission') }}</strong>
+                            <strong>{{ $errors->first('wallet') }}</strong>
                         </span>
                     @endif
                 </div>

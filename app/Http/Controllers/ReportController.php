@@ -11,7 +11,7 @@ use ReflectionClass;
 
 class ReportController extends Controller
 {
-    use AdminReports, FinancialReport, CryptoReports;
+    use AdminReports, FinancialReport;
     protected $clientReports = ['account_statement', 'account_ftp_statement'];
 
     /**

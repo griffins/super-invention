@@ -107,7 +107,7 @@ class Client extends Authenticatable implements MustVerifyEmail
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
-                $transaction->type = 'cycle';
+                $transaction->type = 'profit';
 
                 $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
 

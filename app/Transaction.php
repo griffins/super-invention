@@ -47,6 +47,6 @@ class Transaction extends Model
     public function scopeWithdrawals(Builder $query)
     {
         return $query
-            ->where('type', 'withdrawal');
+            ->where('type', 'withdraw');
     }
 }

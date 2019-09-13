@@ -143,7 +143,7 @@
                     </td>
                     <td><a href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
-                    <td>{{currency( $client->profit)}}</td>
+                    <td>{{currency( $client->profits)}}</td>
                     <td class="text-right">{{$client->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">

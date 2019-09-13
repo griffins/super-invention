@@ -93,6 +93,17 @@
                         </span>
                     @endif
                 </div>
+                <div class="col-5">
+                    <label>Commission</label>
+                    <input type="number" name="commission" value="{{ old('commission',$client->commission) }}"
+                           class="form-control"
+                           placeholder="Commission">
+                    @if ($errors->has('commission'))
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $errors->first('commission') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
 
             <div class="row mt-3">

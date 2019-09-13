@@ -109,12 +109,12 @@ class Client extends Authenticatable implements MustVerifyEmail
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'cycle';
 
-                $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profit / 100;
+                $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
 
                 Transaction::fromExtract($transaction, $client);
 
-                $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profit) / 100;
-                if ($transaction->profits != 100) {
+                $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profits) / 100;
+                if ($client->profits != 100) {
                     Transaction::fromExtract($transaction, $master);
                 }
             }

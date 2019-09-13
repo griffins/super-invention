@@ -100,15 +100,23 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         $balanceBefore = Transaction::query()->where('created_at', '<=', now()->subHour(4))->balance();
         $profits = $emailExtract - $balanceBefore;
-        Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract) {
+        $master = Client::query()->find(1);
+        Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master) {
             foreach ($clients as $client) {
                 $balance = $client->transactions()->where('created_at', '<=', now()->subHour(4))->balance();
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'cycle';
-                $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
+
+                $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profit / 100;
+
                 Transaction::fromExtract($transaction, $client);
+
+                $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profit) / 100;
+                if ($transaction->profits != 100) {
+                    Transaction::fromExtract($transaction, $master);
+                }
             }
         });
     }

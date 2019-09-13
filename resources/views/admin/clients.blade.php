@@ -156,7 +156,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Commission</th>
+                <th>Profit %</th>
                 <th class="text-center">Country</th>
                 <th class="text-center">Joined</th>
                 <th class=""></th>

@@ -125,7 +125,7 @@ class SupportController extends Controller
                     'wallet' => 'required',
                 ];
                 if (request('phone_number')) {
-                    $rules['phone_number'] = 'phone_number:country_code';
+                    $rules['phone_number'] = 'phone:country_code';
                 }
                 request()->validate($rules);
 

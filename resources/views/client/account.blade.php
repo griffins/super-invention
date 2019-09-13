@@ -69,7 +69,7 @@
                 @foreach($client->transactions()->orderByDesc('created_at')->paginate(20) as $transaction)
                     <tr>
                         <td>
-                            <div class="wrap"> {{ md5($transaction->ticket) }}</div>
+                            <div class="wrap"> {{ strtoupper( md5($transaction->ticket)) }}</div>
                         </td>
                         <td>{{ ucfirst( $transaction->type)}}</td>
                         <td>{{ $transaction->item }}</td>

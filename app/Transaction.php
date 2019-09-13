@@ -24,7 +24,7 @@ class Transaction extends Model
     public function scopeProfit(Builder $query)
     {
         return ($query
-            ->whereIn('type', ['cycle'])
+            ->whereIn('type', ['profit'])
             ->selectRaw("sum(amount) as aggregate")->value('aggregate')) ?: 0;
     }
 

@@ -119,19 +119,15 @@ class SupportController extends Controller
                 $rules = [
                     'name' => 'required',
                     'email' => 'required|email|unique:clients,id,' . $client->id,
-                    'country_code' => 'required',
                     'status' => 'required',
                     'profits' => 'required|min:0:max:100',
                     'wallet' => 'required',
                 ];
 
-                if (request('phone_number')) {
-                    $rules['phone_number'] = 'phone:country_code';
-                }
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'email', 'notes', 'wallet', 'profits', 'country_code', 'phone_number'));
+                $client->fill(request()->only('name', 'status', 'email', 'notes', 'wallet', 'profits'));
                 $password = Str::random(6);
                 $client->password = bcrypt($password);
                 $client->save();

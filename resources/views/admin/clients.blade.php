@@ -54,45 +54,6 @@
 
             <div class="row mt-3">
                 <div class="col-3">
-                    <label>Country</label>
-                    <select name="country_code" class="form-control">
-                        <option>Select Country</option>
-                        @foreach($countries as $country)
-                            <option value="{{ $country->alpha2 }}"
-                                    @if(old('country_code',$client->country_code)== $country->alpha2) selected @endif> {{ $country->name }}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('country_code'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('country_code') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="col-3">
-                    <label>Phone Number</label>
-                    <input type="text" name="phone_number" value="{{ old('phone_number',$client->phone_number) }}"
-                           class="form-control"
-                           placeholder="Phone Number">
-                    @if ($errors->has('phone_number'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('phone_number') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="col-2">
-                    <label>% Profit to Receive</label>
-                    <input type="number" name="profit" value="{{ old('profit',$client->profit) }}"
-                           class="form-control"
-                           placeholder="Profit">
-                    @if ($errors->has('profit'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('profit') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-3">
                     <label>Status</label>
                     <select name="status" class="form-control">
                         <option value="active">Active</option>
@@ -106,6 +67,19 @@
                         </span>
                     @endif
                 </div>
+                <div class="col-2">
+                    <label>% Profit to Receive</label>
+                    <input type="number" name="profits" value="{{ old('profits',$client->profits) }}"
+                           class="form-control"
+                           placeholder="Profit %">
+                    @if ($errors->has('profits'))
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $errors->first('profits') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="row mt-3">
                 <div class="col-5">
                     <label>Wallet Address</label>
                     <input type="text" name="wallet" value="{{ old('wallet',$client->wallet) }}"
@@ -155,9 +129,7 @@
                 <th class="w-1"></th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Phone</th>
                 <th>Profit %</th>
-                <th class="text-center">Country</th>
                 <th class="text-center">Joined</th>
                 <th class=""></th>
             </tr>
@@ -171,11 +143,7 @@
                     </td>
                     <td><a href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
-                    <td>{{$client->phone}}</td>
                     <td>{{currency( $client->profit)}}</td>
-                    <td class="text-center">
-                        <i class="flag flag-{{ strtolower($client->country_code) }}"></i>
-                    </td>
                     <td class="text-right">{{$client->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">

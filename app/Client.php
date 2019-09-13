@@ -21,7 +21,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'country_code', 'notes', 'profits', 'wallet', 'phone_number', 'status'
+        'name', 'email', 'password', 'notes', 'profits', 'wallet', 'status'
     ];
 
     /**
@@ -50,30 +50,10 @@ class Client extends Authenticatable implements MustVerifyEmail
         return Photo::avatar();
     }
 
-    public function getPhoneNumberAttribute($value)
-    {
-        $phone = phone($value, $this->country_code);
-        return $phone->formatE164();
-    }
-
-    public function setPhoneNumberAttribute($value)
-    {
-        $this->attributes['phone_number'] = phone($value, $this->country_code)->formatE164();
-    }
 
     public function getAccountBalanceAttribute()
     {
         return $this->transactions()->balance();
-    }
-
-    public function getPhoneAttribute()
-    {
-        try {
-            $phone = phone($this->attributes['phone_number'], $this->country_code);
-            return $phone->formatInternational();
-        } catch (\Exception $e) {
-            return "";
-        }
     }
 
     public function photos()

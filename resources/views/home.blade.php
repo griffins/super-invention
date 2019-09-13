@@ -58,10 +58,10 @@
                 <tbody>
                 @foreach(\App\AcruedAmount::query()->paginate(20) as $interest)
                     <tr>
-                        <th>{{ md5( $interest->message_id) }}</th>
-                        <th>{{ $interest->item }}</th>
-                        <th>{{ currency( $interest->amount,true,8) }}</th>
-                        <th>{{ $interest->created_at }}</th>
+                        <td>{{ md5( $interest->message_id) }}</td>
+                        <td>{{ $interest->item }}</td>
+                        <td>{{ currency( $interest->amount,true,8) }}</td>
+                        <td>{{ $interest->created_at }}</td>
                     </tr>
                 @endforeach
                 </tbody>

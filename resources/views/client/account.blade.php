@@ -69,7 +69,7 @@
                         </th>
                         <th>{{ ucfirst( $transaction->type)}}</th>
                         <th>{{ $transaction->item }}</th>
-                        <th>{{ currency($transaction->amount) }}</th>
+                        <th>{{ currency($transaction->amount,true,8) }}</th>
                         <th>{{ $transaction->created_at }}</th>
                     </tr>
                 @endforeach

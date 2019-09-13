@@ -6,6 +6,7 @@ namespace App\Foundation\Statement;
 
 use App\Account;
 use App\Client;
+use App\Transaction;
 
 class EmailExtract
 {
@@ -20,7 +21,7 @@ class EmailExtract
             $extract->balance = str_replace(' BTC', '', $matches[0]);
             $extract->mailId = $email->message_id;
             $extract->item = "BTC";
-            if (in_array($email->from, ['jackryland@coin-consultant.net'])) {
+            if (in_array($email->from, ['jackryland@coin-consultant.net']) && !Transaction::query()->where('ticket', $extract->mailId)->exists()) {
                 Client::updateBalances($extract);
             }
         }

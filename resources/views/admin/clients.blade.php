@@ -169,10 +169,10 @@
                         <div class="avatar d-block" style="background-image: url({{ $client->photo }})">
                         </div>
                     </td>
-                    <td><a href="{{ route('client',compact('client')) }}"> {{$client->name}}</a></td>
+                    <td><a href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
                     <td>{{$client->phone}}</td>
-                    <td>{{currency( $client->commission)}}</td>
+                    <td>{{currency( $client->profit)}}</td>
                     <td class="text-center">
                         <i class="flag flag-{{ strtolower($client->country_code) }}"></i>
                     </td>

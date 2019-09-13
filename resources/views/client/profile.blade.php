@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    Account / {{ $client->club }} / {{ $client->name }}
+    Account / {{ $client->name }}
     <a data-turbolinks="false" href="{{route('client.dashboard', ['client' => $client])}}"
        class="btn btn-primary float-right">
         @if(user()->role =='admin') Client @else My  @endif
@@ -101,84 +101,7 @@
             @endif
         </div>
         <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Trading Accounts</h4>
-                    <div class="card-options">
-                        @if(user()->club =='*')
-                            <a href="{{ route('account.create',compact('client')) }}"
-                               class="btn btn-sm btn-primary">Add</a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @foreach($client->accounts as $x => $account)
-                @include('client.account',['account' => $account])
-            @endforeach
-
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Referrals</h4>
-                    <div class="card-options">
-                        @if(user()->club =='*')
-                            <a href="{{ route('referral',compact('client')) }}"
-                               class="btn btn-sm btn-primary">Add</a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @foreach($client->referrals as $x => $account)
-                @include('client.account',['account' => $account,'referral' => true])
-            @endforeach
-            <div class="card" id="invoices">
-                <div class="card-header">
-                    <h4 class="card-title">Invoices</h4>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Invoice #</th>
-                            <th>Account</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        @foreach($invoices as $x => $invoice)
-                            <tr>
-                                <td>
-                                    <a
-                                            data-turbolinks="false"
-                                            href="{{ route('invoice',['$invoice' => $invoice]) }}">{{$invoice->number}}
-                                    </a>
-                                </td>
-                                <td>{{$invoice->account->name}}</td>
-                                <td>{{currency($invoice->profit * $invoice->commission_fx * $invoice->commission/100,false)}} {{ $invoice->commission_currency }}</td>
-                                <td>
-                                    <span class="status-icon @if($invoice->status =='active') bg-success @else bg-secondary @endif"></span>{{ucfirst($invoice->status)}}
-                                </td>
-                                <td class="text-center">
-                                    @if($invoice->status =='active' && user()->role !='admin')
-                                        <a href="{{ route('invoice.pay',['client' =>$invoice->account->client,'$invoice' => $invoice]) }}"
-                                           class="btn btn-sm btn-success">Paid</a>
-                                    @elseif ($invoice->status !='closed' && user()->club =='*')
-                                        <a href="{{ route('invoice.close',['client' => $invoice->account->client,'$invoice' => $invoice]) }}"
-                                           class="btn btn-sm btn-success">Paid</a>
-                                    @endif
-                                    <a data-turbolinks="false"
-                                       href="{{ route('invoice',['$invoice' => $invoice]) }}"
-                                       class="btn btn-sm btn-primary">View</a>
-                                    <a data-turbolinks="false"
-                                       href="{{ route('invoice',['$invoice' => $invoice,'action' =>'download']) }}"
-                                       class="btn btn-sm btn-primary">Download</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </table>
-                </div>
-
-            </div>
+            @include('client.account',['client' => $client])
         </div>
     </div>
 @endsection

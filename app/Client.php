@@ -63,7 +63,7 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public function getAccountBalanceAttribute()
     {
-        return $this->accounts()->sum('balance');
+        return $this->transactions()->balance();
     }
 
     public function getPhoneAttribute()
@@ -89,16 +89,6 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function tickets()
     {
         return $this->hasMany(SupportTicket::class);
-    }
-
-    public function accounts()
-    {
-        return $this->hasMany(Account::class);
-    }
-
-    public function referrals()
-    {
-        return $this->belongsToMany(Account::class, "client_referrals");
     }
 
     public function transactions()

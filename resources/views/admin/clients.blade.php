@@ -176,7 +176,7 @@
                     <td class="text-center">
                         <i class="flag flag-{{ strtolower($client->country_code) }}"></i>
                     </td>
-                    <td class="text-left">{{$client->created_at->format('jS M, Y')}}</td>
+                    <td class="text-right">{{$client->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">
                             <a href="javascript:void(0)" data-toggle="dropdown" class="icon" aria-expanded="false"><i

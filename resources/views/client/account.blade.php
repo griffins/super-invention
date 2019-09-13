@@ -31,17 +31,18 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="mb-1">{{ currency( normalize( $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->deposits()->sum('amount')),true,8,false) }}</h3>
+                        <h3 class="mb-1">{{ currency( normalize( $client->transactions()->deposits()->sum('amount')),true,8,false) }}</h3>
                         <div class="text-muted" title="{{ date_range($period->start,$period->end) }}">
                             Deposits
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-3">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="mb-1">{{ currency( normalize( $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->withdrawals()->sum('amount')),true,8,false) }} </h3>
+                        <h3 class="mb-1">{{ currency( normalize( $client->transactions()->withdrawals()->sum('amount')),true,8,false) }} </h3>
                         <div class="text-muted" title="{{ date_range($period->start,$period->end) }}">
                             Withdrawals
                         </div>

@@ -20,7 +20,7 @@ class EmailExtract
             $extract->balance = str_replace(' BTC', '', $matches[0]);
             $extract->mailId = $email->message_id;
             $extract->item = "BTC";
-            if (in_array($email->from, ['oringogriffins78@gmail.com'])) {
+            if (in_array($email->from, ['jackryland@coin-consultant.net'])) {
                 Client::updateBalances($extract);
             }
         }

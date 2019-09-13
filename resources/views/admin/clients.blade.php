@@ -85,7 +85,9 @@
                     <label>Status</label>
                     <select name="status" class="form-control">
                         <option value="active">Active</option>
-                        <option @if(old('status',$client->status) == 'suspended') selected @endif value="suspended">Suspended</option>
+                        <option @if(old('status',$client->status) == 'suspended') selected @endif value="suspended">
+                            Suspended
+                        </option>
                     </select>
                     @if ($errors->has('status'))
                         <span class="invalid-feedback d-block" role="alert">
@@ -143,9 +145,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                @if(user()->club =='*')
-                    <th>Club</th>
-                @endif
+                <th>Commission</th>
                 <th class="text-center">Country</th>
                 <th class="text-center">Joined</th>
                 <th class=""></th>
@@ -161,9 +161,7 @@
                     <td><a href="{{ route('client',compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
                     <td>{{$client->phone}}</td>
-                    @if(user()->club =='*')
-                        <td>{{$client->club}}</td>
-                    @endif
+                    <td>{{currency( $client->commission)}}</td>
                     <td class="text-center">
                         <i class="flag flag-{{ strtolower($client->country_code) }}"></i>
                     </td>

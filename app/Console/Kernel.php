@@ -24,8 +24,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('crypto:stream')
-            ->everyMinute();
         $schedule->command('import:statements')
             ->everyFiveMinutes();
     }

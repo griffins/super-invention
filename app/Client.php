@@ -21,7 +21,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'country_code', 'notes', 'profit','wallet', 'phone_number', 'status'
+        'name', 'email', 'password', 'country_code', 'notes', 'profit', 'wallet', 'phone_number', 'status'
     ];
 
     /**
@@ -107,7 +107,7 @@ class Client extends Authenticatable implements MustVerifyEmail
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'cycle';
-                $transaction->amount = ($balance / $balanceBefore) * $profits;
+                $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
                 Transaction::fromExtract($transaction, $client);
             }
         });

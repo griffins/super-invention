@@ -43,15 +43,11 @@ class ProfileController extends Controller
             $table = strtolower(Str::plural(class_basename($user)));
             $rules = [
                 'name' => 'required',
-                'country_code' => 'required',
                 'email' => sprintf('required|email|unique:%s,id,%s', $table, $user->id)
             ];
-            if ($request->get('phone_number')) {
-                $rules['phone_number'] = sprintf('phone:country_code|unique:%s,id,%s', $table, $user->id);
-            }
 
             $this->validate($request, $rules);
-            $user->fill($request->only('name', 'email', 'country_code', 'phone_number','wallet'));
+            $user->fill($request->only('name', 'email','wallet'));
             $user->save();
 
         } else {

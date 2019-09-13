@@ -61,37 +61,6 @@
                                     </div>
                                 </div>
                                 @csrf
-                                <div class="row mt-3">
-                                    <div class="col-6">
-                                        <label>Country</label>
-                                        <select name="country_code" class="form-control">
-                                            <option>Select Country</option>
-                                            @foreach($countries as $country)
-                                                <option value="{{ $country->alpha2 }}"
-                                                        @if(old('country_code',$user->country_code)== $country->alpha2) selected @endif>
-                                                    {{ $country->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('country_code'))
-                                            <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $errors->first('country_code') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-6">
-                                        <label>Phone</label>
-                                        <input type="text" name="phone_number"
-                                               value="{{ old('phone_number',$user->phone) }}"
-                                               class="form-control d-inline"
-                                               placeholder="Phone">
-                                        @if ($errors->has('phone_number'))
-                                            <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $errors->first('phone_number') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
                                 @if($user->role !=='admin')
                                     <div class="row mt-3">
                                         <div class="col-12">

@@ -31,7 +31,7 @@ class Transaction extends Model
     public function scopeBalance(Builder $query)
     {
         return ($query
-            ->whereIn('type', ['withdrawal', 'deposit', 'profit'])
+            ->whereIn('type', ['withdraw', 'deposit', 'profit'])
             ->selectRaw("sum( CASE WHEN type = 'withdraw' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate')) ?: 0;
     }
 

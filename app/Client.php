@@ -87,19 +87,21 @@ class Client extends Authenticatable implements MustVerifyEmail
         AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
         Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master, $moneyLeft) {
             foreach ($clients as $client) {
-                $balance = $client->transactions()->where('created_at', '<=', now()->subHour(4))->balance();
+                $balance = $client->transactions()->where('created_at', '<=', now()->startOfDay())->balance();
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'profit';
-                $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
-                $moneyLeft -= $transaction->amount;
-                Transaction::fromExtract($transaction, $client);
+                if ($balanceBefore != 0) {
+                    $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
+                    $moneyLeft -= $transaction->amount;
+                    Transaction::fromExtract($transaction, $client);
 
-                $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profits) / 100;
-                $moneyLeft -= $transaction->amount;
-                if ($client->profits != 100) {
-                    Transaction::fromExtract($transaction, $master);
+                    $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profits) / 100;
+                    $moneyLeft -= $transaction->amount;
+                    if ($client->profits != 100) {
+                        Transaction::fromExtract($transaction, $master);
+                    }
                 }
             }
         });

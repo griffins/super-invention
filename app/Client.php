@@ -83,24 +83,32 @@ class Client extends Authenticatable implements MustVerifyEmail
         $profits = $emailExtract->balance;
         $master = Client::query()->find(1);
         DB::beginTransaction();
+        $moneyLeft = $profits;
         AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
-        Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master) {
+        Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master, $moneyLeft) {
             foreach ($clients as $client) {
                 $balance = $client->transactions()->where('created_at', '<=', now()->subHour(4))->balance();
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'profit';
-
                 $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
+                $moneyLeft -= $transaction->amount;
                 Transaction::fromExtract($transaction, $client);
 
                 $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profits) / 100;
+                $moneyLeft -= $transaction->amount;
                 if ($client->profits != 100) {
                     Transaction::fromExtract($transaction, $master);
                 }
             }
         });
+        $transaction = new TransactionExtract();
+        $transaction->ticket = $emailExtract->mailId;
+        $transaction->item = $emailExtract->item;
+        $transaction->type = 'profit';
+        $transaction->amount = $moneyLeft;
+        Transaction::fromExtract($transaction, $master);
         DB::commit();
     }
 

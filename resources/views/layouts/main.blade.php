@@ -93,6 +93,10 @@
                                                    class="dropdown-item @if(request('section') =='clients') active @endif">
                                                     Clients
                                                 </a>
+                                                <a href="{{route('support',['section' => 'requests'])}}"
+                                                   class="dropdown-item @if(request('section') =='requests') active @endif">
+                                                    Requests
+                                                </a>
                                             </div>
                                         </li>
 

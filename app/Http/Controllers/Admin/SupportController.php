@@ -104,8 +104,6 @@ class SupportController extends Controller
         $client = Client::query()->findOrNew(request('client'));
         if (request()->isMethod('post')) {
             if (request('action') == 'delete') {
-                $client->accounts()->delete();
-                $client->transactions()->delete();
                 $client->delete();
                 $message = 'Deleted';
             } else if (request('action') == 'reset_password') {

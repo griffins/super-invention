@@ -1,7 +1,8 @@
 <div class="card">
     <div class="card-status bg-teal"></div>
     <div class="card-header">
-        <h3 class="card-title pt-5"><b>Account Balance</b> {{currency( normalize( $client->transactions()->balance()),true,8)}}
+        <h3 class="card-title pt-5"><b>Account
+                Balance</b> {{currency( normalize( $client->transactions()->balance()),true,8)}}
             BTC
             <br>
             <br>
@@ -27,7 +28,7 @@
                                 $profit  =  $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->profit();
                             $balance =  $client->transactions()->where('created_at','<=',$period->start)->balance();
                             if($balance==0){
-                            $profit = 100;
+                            $profit = 0;
                             }else{
                             $profit = $profit/$balance * 100;
                             }

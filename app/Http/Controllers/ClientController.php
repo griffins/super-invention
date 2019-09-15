@@ -64,7 +64,7 @@ class ClientController extends Controller
             $req = new Request(['operation' => request('operation'), 'wallet' => request('wallet'), 'amount' => request('amount'), 'status' => 'pending', 'item' => 'BTC', 'created_at' => $time, 'transaction_id' => $ticket]);
             $client->requests()->save($req);
             foreach (User::query()->get() as $user) {
-//                $user->notify(new TransactionRequest($req));
+                $user->notify(new TransactionRequest($req));
             }
         }
         return redirect(route('client', compact('client')));

@@ -12,7 +12,6 @@ use App\Notifications\AccountPasswordReset;
 use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
 use App\Notifications\TransactionConfirmation;
-use App\Notifications\TransactionRejected;
 use App\Request;
 use App\Server;
 use App\User;
@@ -114,7 +113,7 @@ class SupportController extends Controller
                 DB::beginTransaction();
                 $transaction = $request->apply(request('amount'), request('date'));
                 $message = sprintf('Request [%s] has been updated.', $request->name);
-//                $request->client->notify(new TransactionConfirmation($transaction));
+                $request->client->notify(new TransactionConfirmation($transaction));
                 DB::commit();
             }
             return redirect(route('support', ['section' => 'requests']))->with('message', $message);

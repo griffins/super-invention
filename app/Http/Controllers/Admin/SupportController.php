@@ -11,6 +11,9 @@ use App\Notifications\AccountConfirmation;
 use App\Notifications\AccountPasswordReset;
 use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
+use App\Notifications\TransactionConfirmation;
+use App\Notifications\TransactionRejected;
+use App\Request;
 use App\Server;
 use App\User;
 use DB;
@@ -38,6 +41,8 @@ class SupportController extends Controller
         switch ($action) {
             case 'users':
                 return $this->users();
+            case 'requests':
+                return $this->requests();
             case 'clients':
                 return $this->accounts();
             default:
@@ -92,6 +97,33 @@ class SupportController extends Controller
             } else {
                 $users = User::query()->get();
                 return view('admin/users', compact('users', 'user', 'countries'));
+            }
+        }
+    }
+
+    private function requests()
+    {
+        $request = Request::query()->findOrNew(request('request'));
+        if (request()->isMethod('post')) {
+            if (request('action') == 'reject') {
+                $request->status = 'rejected';
+                $request->save();
+                $message = 'Deleted';
+                $request->client->notify(new TransactionRejected($request, request('reason')));
+            } else {
+                DB::beginTransaction();
+                $transaction = $request->apply(request('amount'), request('date'));
+                $message = sprintf('Request [%s] has been updated.', $request->name);
+                $request->client->notify(new TransactionConfirmation($transaction));
+                DB::commit();
+            }
+            return redirect(route('support', ['section' => 'requests']))->with('message', $message);
+        } else if (request()->isMethod('GET')) {
+            if (request('action') == 'edit') {
+                return view('admin/transactions', compact('requests'));
+            } else {
+                $requests = Request::query()->where('status', 'pending')->get();
+                return view('admin/transactions', compact('requests'));
             }
         }
     }

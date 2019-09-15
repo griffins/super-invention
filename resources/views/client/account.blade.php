@@ -1,20 +1,19 @@
 <div class="card">
     <div class="card-status bg-teal"></div>
     <div class="card-header">
-        <h3 class="card-title">({{currency( normalize( $client->transactions()->balance()),true,8)}} BTC)
+        <h3 class="card-title pt-5">Account Balance {{currency( normalize( $client->transactions()->balance()),true,8)}}
+            BTC
             <br>
             <br>
         </h3>
-        @if(user()->role=='admin')
-            <div class="card-options">
-                <button data-toggle="modal" data-target="#transaction" data-type="deposit" class="btn btn-success">
-                    Deposit
-                </button>
-                <button data-toggle="modal" data-target="#transaction" data-type="withdraw"
-                        class="btn btn-primary mx-2">Withdraw
-                </button>
-            </div>
-        @endif
+        <div class="card-options">
+            <button data-toggle="modal" data-target="#transaction" data-type="deposit" class="btn btn-success">
+                Deposit
+            </button>
+            <button data-toggle="modal" data-target="#transaction" data-type="withdraw"
+                    class="btn btn-primary mx-2">Withdraw
+            </button>
+        </div>
     </div>
     <div class="card-body">
         <div class="row">
@@ -55,6 +54,7 @@
             </div>
         </div>
         @if($client->transactions()->count()>0)
+            <h5>Recent Transactions</h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -85,6 +85,37 @@
             <div class="jumbotron text-center">
                 No transactions
             </div>
+        @endif
+        @if($client->requests()->count()>0)
+            <h5>Transaction Requests</h5>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td><b>ID</b></td>
+                    <td><b>Type</b></td>
+                    <td><b>Item</b></td>
+                    <td><b>Amount</b></td>
+                    <td><b>Status</b></td>
+                    <td><b>Date</b></td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($client->requests()->orderByDesc('created_at')->paginate(20) as $transaction)
+                    <tr>
+                        <td>
+                            <b>
+                                <div class="wrap"> {{ strtoupper( md5($transaction->id)) }}</div>
+                            </b>
+                        </td>
+                        <td><b>{{ ucfirst( $transaction->operation)}}</b></td>
+                        <td><b>{{ $transaction->item }}</b></td>
+                        <td><b>{{ currency($transaction->amount,true,8) }}</b></td>
+                        <td><b>{{ ucfirst( $transaction->status) }}</b></td>
+                        <td><b>{{ $transaction->created_at->diffForHumans() }}</b></td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         @endif
     </div>
 </div>

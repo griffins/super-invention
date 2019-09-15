@@ -16,8 +16,11 @@ class CreateRequestsTable extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('transaction_id')->nullable();
+            $table->string('client_id')->nullable();
             $table->string('operation');
-            $table->string('wallet');
+            $table->string('item');
+            $table->decimal('amount', 15, 8);
+            $table->string('wallet')->nullable();
             $table->string('status');
             $table->timestamps();
         });

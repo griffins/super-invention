@@ -77,6 +77,11 @@ class Client extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Transaction::class);
     }
 
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
     public static function updateBalances(EmailExtract $emailExtract)
     {
         $balanceBefore = Transaction::query()->where('created_at', '<=', now()->startOfDay())->balance();

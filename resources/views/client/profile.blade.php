@@ -153,9 +153,11 @@
                                 <br>
                                 <br>
                                 <code>3898iVFmopLijwy2n4sRDnR5jWbSTekov4</code>
+
+                                <img class="" src="{{ asset('images/wallet.jpg') }}">
                             </div>
                             <div class="form-group text-primary" id="transaction_withdraw">
-                                Please note that are processed within 24-48 hours.
+                                Please note that withdrawals are processed within 24-48 hours.
                                 <br>
                                 Enter the wallet id below and the amount you wish to withdraw from your account.
                             </div>

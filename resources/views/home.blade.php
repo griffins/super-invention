@@ -38,7 +38,7 @@
                                 @php
                                     $profit  =  \App\Transaction::query()->whereBetween('created_at',[$period->start,$period->end])->profit();
                                 @endphp
-                                <div class="h1 m-0">{{ currency($profit,true,8,!true) }} %</div>
+                                <div class="h1 m-0">{{ currency($profit,true,8,!true) }}</div>
                                 <div class="text-muted mb-4"> Profit ({{ $period->name }})</div>
                             </div>
                         </div>

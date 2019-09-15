@@ -77,53 +77,56 @@
                             </li>
                             @if(user())
                                 @if(user()->role == 'admin')
-                                    @if(user()->club == '*')
-                                        <li class="nav-item">
-                                            <a class="nav-link text-white @if(route_matches('support')) active @endif"
-                                               href="{{ route('support') }}" data-toggle="dropdown"> <i
-                                                        class="fe fe-settings"></i>
-                                                Administration
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-arrow">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white @if(route_matches('support')) active @endif"
+                                           href="{{ route('support') }}" data-toggle="dropdown"> <i
+                                                    class="fe fe-settings"></i>
+                                            Administration
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-arrow">
+                                            @if(user()->id != 4)
                                                 <a href="{{ route('support',['section' => 'users']) }}"
                                                    class="dropdown-item @if(request('section') =='users') active @endif">
                                                     Administrators
                                                 </a>
-                                                <a href="{{route('support',['section' => 'clients'])}}"
-                                                   class="dropdown-item @if(request('section') =='clients') active @endif">
-                                                    Clients
-                                                </a>
+                                            @endif
+                                            <a href="{{route('support',['section' => 'clients'])}}"
+                                               class="dropdown-item @if(request('section') =='clients') active @endif">
+                                                Clients
+                                            </a>
+                                            @if(user()->id != 4)
                                                 <a href="{{route('support',['section' => 'requests'])}}"
                                                    class="dropdown-item @if(request('section') =='requests') active @endif">
                                                     Requests
                                                 </a>
-                                            </div>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a data-turbolinks="false"
-                                               class="nav-link text-white @if(route_matches('mailbox')) active @endif"
-                                               href="{{ route('mailbox') }}"><i class="fe fe-mail"></i>Mail Box</a>
-                                        </li>
-                                    @endif
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white @if(route_matches('reports')) active @endif"
-                                           href="{{ route('report') }}"><i class="fe fe-file"></i> Reports</a>
+                                            @endif
+                                        </div>
                                     </li>
-                                    @if(user()->club == '*')
-                                        <li class="nav-item">
-                                            <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"
-                                               href="{{ route('support.resolution') }}"> <i class="fe fe-life-buoy"></i>Help
-                                                Desk</a>
-                                        </li>
-                                    @endif
-                                @else
+
                                     <li class="nav-item">
-                                        <a class="nav-link text-white @if(route_matches('support.ticket')) active @endif"
-                                           href="{{ route('support.ticket') }}"> <i class="fe fe-life-buoy"></i>Help
+                                        <a data-turbolinks="false"
+                                           class="nav-link text-white @if(route_matches('mailbox')) active @endif"
+                                           href="{{ route('mailbox') }}"><i class="fe fe-mail"></i>Mail Box</a>
+                                    </li>
+                                @endif
+                                <li class="nav-item">
+                                    <a class="nav-link text-white @if(route_matches('reports')) active @endif"
+                                       href="{{ route('report') }}"><i class="fe fe-file"></i> Reports</a>
+                                </li>
+                                @if(user()->id != 4)
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"
+                                           href="{{ route('support.resolution') }}"> <i class="fe fe-life-buoy"></i>Help
                                             Desk</a>
                                     </li>
                                 @endif
+                            @else
+                                <li class="nav-item">
+                                    <a class="nav-link text-white @if(route_matches('support.ticket')) active @endif"
+                                       href="{{ route('support.ticket') }}"> <i class="fe fe-life-buoy"></i>Help
+                                        Desk</a>
+                                </li>
                             @endif
                         </ul>
                     </div>

@@ -1,19 +1,21 @@
 <div class="card">
     <div class="card-status bg-teal"></div>
     <div class="card-header">
-        <h3 class="card-title pt-5">Account Balance {{currency( normalize( $client->transactions()->balance()),true,8)}}
+        <h3 class="card-title pt-5"><b>Account Balance</b> {{currency( normalize( $client->transactions()->balance()),true,8)}}
             BTC
             <br>
             <br>
         </h3>
-        <div class="card-options">
-            <button data-toggle="modal" data-target="#transaction" data-type="deposit" class="btn btn-success">
-                Deposit
-            </button>
-            <button data-toggle="modal" data-target="#transaction" data-type="withdraw"
-                    class="btn btn-primary mx-2">Withdraw
-            </button>
-        </div>
+        @if(!(user()->role =='admin' &&  user()->id ==4))
+            <div class="card-options">
+                <button data-toggle="modal" data-target="#transaction" data-type="deposit" class="btn btn-success">
+                    Deposit
+                </button>
+                <button data-toggle="modal" data-target="#transaction" data-type="withdraw"
+                        class="btn btn-primary mx-2">Withdraw
+                </button>
+            </div>
+        @endif
     </div>
     <div class="card-body">
         <div class="row">
@@ -21,7 +23,16 @@
                 <div class="col-3">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="mb-1">{{ currency( normalize( $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->profit()),true,8,false) }}</h4>
+                            @php
+                                $profit  =  $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->profit();
+                            $balance =  $client->transactions()->where('created_at','<=',$period->start)->balance();
+                            if($balance==0){
+                            $profit = 100;
+                            }else{
+                            $profit = $profit/$balance * 100;
+                            }
+                            @endphp
+                            <h4 class="mb-1">{{ currency( normalize($profit),true,2,false) }}%</h4>
                             <div class="text-muted" title="{{ date_range($period->start,$period->end) }}"><b>
                                     Profit
                                     ({{ $period->name }})</b>
@@ -34,6 +45,7 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body">
+
                         <h4 class="mb-1">{{ currency( normalize( $client->transactions()->deposits()->sum('amount')),true,8,false) }}</h4>
                         <div class="text-muted" title="{{ date_range($period->start,$period->end) }}">
                             Deposits

@@ -149,11 +149,15 @@
                                 Please deposit the transaction amount to the bitcoin wallet below, the enter the
                                 details here to facilitate the confirmation.
                                 <br>
+                                Deposits will become active at 0:00 GMT
+                                <br>
                                 <br>
                                 <code>3898iVFmopLijwy2n4sRDnR5jWbSTekov4</code>
                             </div>
                             <div class="form-group text-primary" id="transaction_withdraw">
-                                Please enter the wallet id below and the amount you wish to withdraw from your account.
+                                Please note that are processed within 24-48 hours.
+                                <br>
+                                Enter the wallet id below and the amount you wish to withdraw from your account.
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">Amount:</label>
@@ -170,6 +174,7 @@
                                 <label class="col-form-label">Your Wallet ID:</label>
                                 <input type="text" value="{{ $client->wallet }}" name="wallet_id" class="form-control">
                             </div>
+
 
                             <div class="form-group text-danger">
                                 Trading Currencies carries a high level of risk to your capital and you should only

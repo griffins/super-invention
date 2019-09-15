@@ -37,8 +37,14 @@
                                 </div>
                                 @php
                                     $profit  =  \App\Transaction::query()->whereBetween('created_at',[$period->start,$period->end])->profit();
+                                $balance = \App\Transaction::query()->where('created_at','<=',$period->start)->balance();
+                                if($balance==0){
+                                $profit = 100;
+                                }else{
+                                $profit = $profit/$balance * 100;
+                                }
                                 @endphp
-                                <div class="h1 m-0">{{ currency($profit,true,6,!true) }}</div>
+                                <div class="h1 m-0">{{ currency($profit,true,2,!true) }} %</div>
                                 <div class="text-muted mb-4"> Profit ({{ $period->name }})</div>
                             </div>
                         </div>
@@ -56,7 +62,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach(\App\AcruedAmount::query()->paginate(20) as $interest)
+                @foreach(\App\AcruedAmount::query()->orderByDesc('created_at')->paginate(20) as $interest)
 
                     <tr>
                         <td><b>{{ strtoupper( md5( $interest->message_id)) }}                    </b></td>

@@ -151,12 +151,14 @@
                                         class="fe fe-more-vertical"></i></a>
                             <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
                                  style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                <a href="{{ route('support',['action' => 'edit','section' => 'clients','client' => $client]) }}"
-                                   class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i> Edit </a>
-                                <a href="#" data-toggle="modal" data-target="#passwordReset"
-                                   data-name="{{$client->name}}" data-email="{{$client->email}}"
-                                   data-url="{{ route('support',['action' => 'reset_password','section' => 'clients','client' => $client]) }}"
-                                   class="dropdown-item"><i class="dropdown-icon fe fe-lock"></i> Reset Password</a>
+                                @if(user()->id!=4)
+                                    <a href="{{ route('support',['action' => 'edit','section' => 'clients','client' => $client]) }}"
+                                       class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i> Edit </a>
+                                    <a href="#" data-toggle="modal" data-target="#passwordReset"
+                                       data-name="{{$client->name}}" data-email="{{$client->email}}"
+                                       data-url="{{ route('support',['action' => 'reset_password','section' => 'clients','client' => $client]) }}"
+                                       class="dropdown-item"><i class="dropdown-icon fe fe-lock"></i> Reset Password</a>
+                                @endif
                             </div>
                         </div>
                     </td>

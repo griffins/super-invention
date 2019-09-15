@@ -26,12 +26,13 @@
                         <div class="card-body">
                             @php
                                 $profit  =  $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->profit();
-                            $balance =  $client->transactions()->where('created_at','<=',$period->start)->balance();
-                            if($balance==0){
-                            $profit = 0;
-                            }else{
-                            $profit = $profit/$balance * 100;
-                            }
+                                $balance =  $client->transactions()->where('created_at','<=',$period->start)->balance();
+                                if($profit!=0){
+                                if($balance==0){
+                                $profit = 100;
+                                }else{
+                                $profit = $profit/$balance * 100;
+                                }
                             @endphp
                             <h4 class="mb-1">{{ currency( normalize($profit),true,2,false) }}%</h4>
                             <div class="text-muted" title="{{ date_range($period->start,$period->end) }}"><b>

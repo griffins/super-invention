@@ -110,10 +110,6 @@
                                            href="{{ route('mailbox') }}"><i class="fe fe-mail"></i>Mail Box</a>
                                     </li>
                                 @endif
-                                <li class="nav-item">
-                                    <a class="nav-link text-white @if(route_matches('reports')) active @endif"
-                                       href="{{ route('report') }}"><i class="fe fe-file"></i> Reports</a>
-                                </li>
                                 @if(user()->id != 4)
                                     <li class="nav-item">
                                         <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"

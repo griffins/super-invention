@@ -38,6 +38,7 @@
                                 @php
                                     $profit  =  \App\Transaction::query()->whereBetween('created_at',[$period->start,$period->end])->profit();
                                 $balance = \App\Transaction::query()->where('created_at','<=',$period->start)->balance();
+                                 if($profit!=0){
                                 if($balance==0){
                                 $profit = 100;
                                 }else{

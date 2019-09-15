@@ -18,10 +18,8 @@
             <div class="col-12 p-0 mt-3">
                 @foreach($reports as $report)
                     @if(!in_array($report->slug,['account_statement','account_ftp_statement']))
-                        @if(user()->club =='*' || in_array($report->slug,['commission_payable','current_invoices','closed_invoices','pending_invoices']))
-                            <a class="btn btn-outline-primary mr-1 mt-1"
-                               href="{{ route('report',['report' => $report->slug]) }}">{{$report->title}}</a>
-                        @endif
+                        <a class="btn btn-outline-primary mr-1 mt-1"
+                           href="{{ route('report',['report' => $report->slug]) }}">{{$report->title}}</a>
                     @endif
                 @endforeach
             </div>

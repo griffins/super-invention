@@ -38,11 +38,12 @@
                                 @php
                                     $profit  =  \App\Transaction::query()->whereBetween('created_at',[$period->start,$period->end])->profit();
                                 $balance = \App\Transaction::query()->where('created_at','<=',$period->start)->balance();
-                                 if($profit!=0){
+                                    if($profit!=0){
                                 if($balance==0){
                                 $profit = 100;
                                 }else{
                                 $profit = $profit/$balance * 100;
+                                }
                                 }
                                 @endphp
                                 <div class="h1 m-0">{{ currency($profit,true,2,!true) }} %</div>

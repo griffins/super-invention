@@ -33,6 +33,7 @@
                                 }else{
                                 $profit = $profit/$balance * 100;
                                 }
+                                }
                             @endphp
                             <h4 class="mb-1">{{ currency( normalize($profit),true,2,false) }}%</h4>
                             <div class="text-muted" title="{{ date_range($period->start,$period->end) }}"><b>

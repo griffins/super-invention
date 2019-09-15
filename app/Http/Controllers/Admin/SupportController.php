@@ -109,12 +109,12 @@ class SupportController extends Controller
                 $request->status = 'rejected';
                 $request->save();
                 $message = 'Deleted';
-                $request->client->notify(new TransactionRejected($request, request('reason')));
+//                $request->client->notify(new TransactionRejected($request, request('reason')));
             } else {
                 DB::beginTransaction();
                 $transaction = $request->apply(request('amount'), request('date'));
                 $message = sprintf('Request [%s] has been updated.', $request->name);
-                $request->client->notify(new TransactionConfirmation($transaction));
+//                $request->client->notify(new TransactionConfirmation($transaction));
                 DB::commit();
             }
             return redirect(route('support', ['section' => 'requests']))->with('message', $message);

@@ -180,7 +180,7 @@ class SupportController extends Controller
             if (request('action') == 'edit') {
                 return view('admin/clients', compact('client', 'countries'));
             } else {
-                $clients = Client::query()->byAdminRole()->orderBy('name')->get();
+                $clients = Client::query()->orderBy('name')->get();
                 return view('admin/clients', compact('clients', 'client', 'countries'));
             }
         }

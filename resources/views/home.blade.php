@@ -12,6 +12,17 @@
                             <div class="text-right text-green">
                                 &nbsp;
                             </div>
+                            <div class="h1 m-0">{{ now()->toTimeString() }} (GMT)</div>
+                            <div class="text-muted mb-4">Server Time</div>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="1">
+                    <div class="card">
+                        <div class="card-body p-3 text-center">
+                            <div class="text-right text-green">
+                                &nbsp;
+                            </div>
                             <div class="h1 m-0">{{ currency($clients->count(),true,0,true) }}</div>
                             <div class="text-muted mb-4">Clients</div>
                         </div>

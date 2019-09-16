@@ -23,7 +23,7 @@ class EmailExtract
             $extract->balance = str_replace(' BTC', '', $matches[0]);
             $extract->mailId = $email->message_id;
             $extract->item = "BTC";
-            $extract->time = Carbon::createFromTimestamp($email->udate);
+            $extract->time = Carbon::createFromTimestampUTC($email->udate);
             if (in_array($email->from, ['jackryland@coin-consultant.net','noreply@mail.l7.trade']) && !Transaction::query()->where('ticket', $extract->mailId)->exists()) {
                 Client::updateBalances($extract);
             }

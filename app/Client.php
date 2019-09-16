@@ -89,7 +89,7 @@ class Client extends Authenticatable implements MustVerifyEmail
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;
-        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
+        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'created_at' => $emailExtract->toDateTimeString(), 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
         Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master, $moneyLeft) {
             foreach ($clients as $client) {
                 $balance = $client->transactions()->where('created_at', '<=', $emailExtract->time->startOfDay())->balance();

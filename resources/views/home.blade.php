@@ -12,8 +12,8 @@
                             <div class="text-right text-green">
                                 &nbsp;
                             </div>
-                            <div class="h1 m-0">{{ now()->toTimeString() }} (GMT)</div>
-                            <div class="text-muted mb-4">Server Time</div>
+                            <div class="h1 m-0">{{ now()->toTimeString() }}</div>
+                            <div class="text-muted mb-4">Server Time (GMT)</div>
                         </div>
                     </div>
                 </td>

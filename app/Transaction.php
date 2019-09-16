@@ -16,7 +16,6 @@ class Transaction extends Model
         if ($extract->amount != 0) {
             $transaction = static::query()
                 ->firstOrNew(['ticket' => $extract->ticket, 'created_at' => $extract->time, 'amount' => $extract->amount, 'type' => $extract->type, 'item' => $extract->item, 'client_id' => $client->id]);
-            $transaction->fill((array)$extract);
             $transaction->save();
         }
     }

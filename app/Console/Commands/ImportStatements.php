@@ -40,7 +40,7 @@ class ImportStatements extends Command
     public function handle()
     {
         $mail = new MailReader(env('MAILBOX_USERNAME'),env('MAILBOX_PASSWORD'));
-        foreach ($mail->emailsLastTwoDays() as $email) {
+        foreach ($mail->emailsLastThreeDays() as $email) {
             try {
                 EmailExtract::process($email);
             } catch (\Throwable $e) {

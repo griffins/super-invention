@@ -13,4 +13,5 @@ class TransactionExtract
     public $type;
     public $item;
     public $amount;
+    public $time;
 }

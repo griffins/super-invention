@@ -40,9 +40,9 @@ class MailReader
         $this->imap = false;
     }
 
-    public function emailsLastTwoDays()
+    public function emailsLastThreeDays()
     {
-        $criteria = 'SINCE "' . now()->subDay()->startOfDay()->format("j F Y") . '"';
+        $criteria = 'SINCE "' . now()->subDays(3)->startOfDay()->format("j F Y") . '"';
         return $this->search($criteria);
     }
 

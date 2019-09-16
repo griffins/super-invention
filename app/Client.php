@@ -84,19 +84,20 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public static function updateBalances(EmailExtract $emailExtract)
     {
-        $balanceBefore = Transaction::query()->where('created_at', '<=', now()->startOfDay())->balance();
+        $balanceBefore = Transaction::query()->where('created_at', '<=', $emailExtract->time->startOfDay())->balance();
         $profits = $emailExtract->balance - $balanceBefore;
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;
-        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
+        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
         Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master, $moneyLeft) {
             foreach ($clients as $client) {
-                $balance = $client->transactions()->where('created_at', '<=', now()->startOfDay())->balance();
+                $balance = $client->transactions()->where('created_at', '<=', $emailExtract->time->startOfDay())->balance();
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'profit';
+                $transaction->time = $emailExtract->time;
                 if ($balanceBefore != 0) {
                     $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
                     $moneyLeft -= $transaction->amount;
@@ -115,6 +116,7 @@ class Client extends Authenticatable implements MustVerifyEmail
         $transaction->item = $emailExtract->item;
         $transaction->type = 'profit';
         $transaction->amount = $moneyLeft;
+        $transaction->time = $emailExtract->time;
         Transaction::fromExtract($transaction, $master);
         DB::commit();
     }

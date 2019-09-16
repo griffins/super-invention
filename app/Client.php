@@ -85,7 +85,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     public static function updateBalances(EmailExtract $emailExtract)
     {
         $balanceBefore = Transaction::query()->where('created_at', '<=', now()->startOfDay())->balance();
-        $profits = $emailExtract->balance;
+        $profits = $emailExtract->balance - $balanceBefore;
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;

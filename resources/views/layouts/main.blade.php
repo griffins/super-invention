@@ -103,11 +103,16 @@
                                             @endif
                                         </div>
                                     </li>
-
+                                    @if(user()->id != 4)
+                                        <li class="nav-item">
+                                            <a data-turbolinks="false"
+                                               class="nav-link text-white @if(route_matches('mailbox')) active @endif"
+                                               href="{{ route('mailbox') }}"><i class="fe fe-mail"></i>Mail Box</a>
+                                        </li>
+                                    @endif
                                     <li class="nav-item">
-                                        <a data-turbolinks="false"
-                                           class="nav-link text-white @if(route_matches('mailbox')) active @endif"
-                                           href="{{ route('mailbox') }}"><i class="fe fe-mail"></i>Mail Box</a>
+                                        <a class="nav-link text-white @if(route_matches('reports')) active @endif"
+                                           href="{{ route('report') }}"><i class="fe fe-file"></i> Reports</a>
                                     </li>
                                 @endif
                                 @if(user()->id != 4)

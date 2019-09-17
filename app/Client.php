@@ -84,30 +84,35 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public static function updateBalances(EmailExtract $emailExtract)
     {
-        $balanceBefore = Transaction::query()->where('created_at', '<=', $emailExtract->time->copy()->startOfDay())->balance();
-        $profits = $emailExtract->balance - $balanceBefore;
+        $copyTime = AcruedAmount::query()->where('created_at', '<=', $emailExtract->time)->orderByDesc('created_at')->limit(1)->first();
+        if ($copyTime) {
+            $copyTime = $copyTime->created_at->addMinutes(45);
+        } else {
+            $copyTime = Transaction::query()
+                ->where('created_at', '<', $emailExtract->time->copy())
+                ->orderByDesc('created_at')
+                ->first()
+                ->created_at;
+        }
+
+        $totalBalance = Transaction::query()->where('created_at', '<=', $copyTime)->balance();
+        $profits = $emailExtract->balance - $totalBalance;
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;
         AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
-        Client::query()->chunk(20, function ($clients) use ($profits, $balanceBefore, $emailExtract, $master, $moneyLeft) {
+        Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($profits, $totalBalance, $emailExtract, $copyTime, $master, &$moneyLeft) {
             foreach ($clients as $client) {
-                $balance = $client->transactions()->where('created_at', '<=', $emailExtract->time->copy()->startOfDay())->balance();
+                $clientBalance = $client->transactions()->where('created_at', '<=', $copyTime)->balance();
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'profit';
                 $transaction->time = $emailExtract->time;
-                if ($balanceBefore != 0) {
-                    $transaction->amount = ($balance / $balanceBefore) * $profits * $client->profits / 100;
+                if ($totalBalance != 0) {
+                    $transaction->amount = ($clientBalance / $totalBalance) * $profits * $client->profits / 100;
                     $moneyLeft -= $transaction->amount;
                     Transaction::fromExtract($transaction, $client);
-
-                    $transaction->amount = ($balance / $balanceBefore) * $profits * (100 - $client->profits) / 100;
-                    $moneyLeft -= $transaction->amount;
-                    if ($client->profits != 100) {
-                        Transaction::fromExtract($transaction, $master);
-                    }
                 }
             }
         });

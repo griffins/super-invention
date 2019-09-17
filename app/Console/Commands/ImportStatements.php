@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\AcruedAmount;
 use App\Foundation\Statement\EmailExtract;
 use App\Mail\MailReader;
+use App\Transaction;
 use Illuminate\Console\Command;
 
 class ImportStatements extends Command
@@ -39,10 +41,10 @@ class ImportStatements extends Command
      */
     public function handle()
     {
-        $mail = new MailReader(env('MAILBOX_USERNAME'),env('MAILBOX_PASSWORD'));
+        $mail = new MailReader(env('MAILBOX_USERNAME'), env('MAILBOX_PASSWORD'));
         foreach ($mail->emailsLastThreeDays() as $email) {
             try {
-                EmailExtract::process($email);
+               EmailExtract::process($email);
             } catch (\Throwable $e) {
                 report($e);
             }

@@ -66,7 +66,7 @@ class MailReader
                 return $email;
             });
             $this->close();
-            cache()->put($key, $data, now()->addMinutes(5));
+            cache()->put($key, $data, now()->addMinutes(3));
         }
         return cache($key);
 

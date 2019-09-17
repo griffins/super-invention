@@ -18,7 +18,7 @@ class TransactionsAdjustment extends Migration
            $table->dropColumn('opened_at') ;
            $table->dropColumn('closed_at') ;
            $table->dropColumn('profit') ;
-            $table->decimal("amount", 15, 7)->default(0);
+            $table->decimal("amount", 15, 8)->default(0);
         });
     }
 

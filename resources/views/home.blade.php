@@ -63,7 +63,7 @@
                     <td><b>ID</b></td>
                     <td><b>Item</b></td>
                     <td><b>Amount</b></td>
-                    <td><b>Date</b></td>
+                    <td><b>Date (GMT)</b></td>
                 </tr>
                 </thead>
                 <tbody>

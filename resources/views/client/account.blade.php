@@ -26,7 +26,7 @@
                         <div class="card-body">
                             @php
                                 $profit  =  $client->transactions()->whereBetween('created_at',[$period->start,$period->end])->profit();
-                                $balance =  $client->transactions()->where('created_at','<=',$period->start)->balance();
+                                $balance =  $client->transactions()->where('created_at','<=', $period->start)->balance();
                                 if($profit!=0){
                                 if($balance==0){
                                 $profit = 100;
@@ -40,11 +40,34 @@
                                     Profit
                                     ({{ $period->name }})</b>
                             </div>
-                            </b>
                         </div>
                     </div>
                 </div>
             @endforeach
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        @php
+                            $profit  =  $client->transactions()->profit();
+                            $balance =  $client->transactions()->deposits()->sum('amount');
+                            if($profit!=0){
+                            if($balance==0){
+                            $profit = 100;
+                            }else{
+                            $profit = $profit/$balance * 100;
+                            }
+                            }
+                        @endphp
+                        <h4 class="mb-1">{{ currency( normalize($profit),true,2,false) }}%</h4>
+                        <div class="text-muted" title="Total Profit">
+                            <b>
+                                Profit
+                                (Total)
+                            </b>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-3">
                 <div class="card">
                     <div class="card-body">

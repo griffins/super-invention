@@ -29,10 +29,6 @@ class ClientController extends Controller
                 'name' => 'Today',
                 'start' => now()->startOfDay(),
                 'end' => now()->endOfDay()],
-            (object)[
-                'name' => 'Total',
-                'start' => Carbon::parse('first day of august 2019'),
-                'end' => now()->endOfYear()],
         ];
         return view('client.profile', compact('client', 'periods', 'types'));
     }

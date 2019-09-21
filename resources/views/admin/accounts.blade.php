@@ -92,7 +92,6 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Clients</th>
                 <th class="text-left">Created</th>
                 <th class=""></th>
             </tr>
@@ -102,7 +101,6 @@
                 <tr>
                     <td>{{$account->name}}</td>
                     <td>{{$account->email}}</td>
-                    <td>{{currency( $account->clients()->count(),false,0)}}</td>
                     <td class="text-left">{{$account->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">

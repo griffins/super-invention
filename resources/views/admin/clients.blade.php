@@ -54,23 +54,6 @@
 
             <div class="row mt-3">
                 <div class="col-3">
-                    <label>Account</label>
-                    <select name="account_id" class="form-control">
-                        <option value="">Select Account</option>
-                        @foreach($accounts as $account)
-                            <option @if(old('active',$account->id) == $client->account_id) selected
-                                    @endif value="{{ $account->id }}">
-                                {{ $account->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('account_id'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('account_id') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="col-3">
                     <label>Status</label>
                     <select name="status" class="form-control">
                         <option value="active">Active</option>

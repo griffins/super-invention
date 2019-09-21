@@ -15,7 +15,7 @@ class Transaction extends Model
     {
         if ($extract->amount != 0) {
             $transaction = static::query()
-                ->firstOrNew(['ticket' => $extract->ticket, 'account_id' => $extract->account_id, 'created_at' => $extract->time->toDateTimeString(), 'amount' => $extract->amount, 'type' => $extract->type, 'item' => $extract->item, 'client_id' => $client->id]);
+                ->firstOrNew(['ticket' => $extract->ticket,'created_at' => $extract->time->toDateTimeString(), 'amount' => $extract->amount, 'type' => $extract->type, 'item' => $extract->item, 'client_id' => $client->id]);
             $transaction->save();
         }
     }

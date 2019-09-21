@@ -87,25 +87,22 @@ class Client extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Request::class);
     }
 
-    public static function updateBalances(Account $account, EmailExtract $emailExtract)
+    public static function updateBalances(EmailExtract $emailExtract)
     {
         $copyTime = AcruedAmount::query()
             ->where('created_at', '<=', $emailExtract->time)
-            ->where('account_id', $account->id)
             ->orderByDesc('created_at')->limit(1)->first();
         if ($copyTime) {
             $copyTime = $copyTime->created_at->addMinutes(45);
         } else {
             $copyTime = Transaction::query()
                 ->where('created_at', '<', $emailExtract->time->copy())
-                ->where('account_id', $account->id)
                 ->orderByDesc('created_at')
                 ->first()
                 ->created_at;
         }
 
         $totalBalance = Transaction::query()
-            ->where('account_id', $account->id)
             ->where('created_at', '<=', $copyTime)
             ->balance();
         $profits = $emailExtract->balance - $totalBalance;
@@ -120,7 +117,6 @@ class Client extends Authenticatable implements MustVerifyEmail
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'profit';
-                $transaction->account_id = $account->id;
                 $transaction->time = $emailExtract->time;
                 if ($totalBalance != 0) {
                     $transaction->amount = ($clientBalance / $totalBalance) * $profits * $client->profits / 100;
@@ -133,7 +129,6 @@ class Client extends Authenticatable implements MustVerifyEmail
         $transaction->ticket = $emailExtract->mailId;
         $transaction->item = $emailExtract->item;
         $transaction->type = 'profit';
-        $transaction->account_id = $account->id;
         $transaction->amount = $moneyLeft;
         $transaction->time = $emailExtract->time;
         Transaction::fromExtract($transaction, $master);

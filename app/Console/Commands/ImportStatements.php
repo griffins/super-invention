@@ -45,7 +45,7 @@ class ImportStatements extends Command
             $mail = new MailReader($account->email, $account->password);
             foreach ($mail->emailsLastThreeDays() as $email) {
                 try {
-                    EmailExtract::process($email);
+                    EmailExtract::process($account,$email);
                 } catch (\Throwable $e) {
                     report($e);
                 }

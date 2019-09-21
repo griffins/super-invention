@@ -20,6 +20,13 @@ class CreateAccountsTable extends Migration
             $table->string('password');
             $table->timestamps();
         });
+
+        Schema::table('acrued_amounts', function (Blueprint $table) {
+            $table->bigInteger('account_id')->nullable();
+        });
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->bigInteger('account_id')->nullable();
+        });
     }
 
     /**
@@ -30,5 +37,11 @@ class CreateAccountsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('accounts');
+        Schema::table('acrued_amounts', function (Blueprint $table) {
+            $table->dropColumn('account_id');
+        });
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->dropColumn('account_id');
+        });
     }
 }

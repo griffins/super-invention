@@ -40,12 +40,53 @@ class SupportController extends Controller
         switch ($action) {
             case 'users':
                 return $this->users();
+            case 'accounts':
+                return $this->accountBox();
             case 'requests':
                 return $this->requests();
             case 'clients':
                 return $this->accounts();
             default:
                 return redirect(route('support', ['section' => 'users']));
+        }
+    }
+
+    private function accountBox()
+    {
+        $account = Account::query()->findOrNew(request('account'));
+        if (request()->isMethod('post')) {
+            if (request('action') == 'delete') {
+                $account->delete();
+                $message = 'Deleted';
+            } else {
+                $rules = [
+                    'name' => 'required',
+                    'email' => 'required|email',
+                    'password' => 'required',
+                ];
+
+                request()->validate($rules);
+
+                DB::beginTransaction();
+                $account->fill(request()->only('name', 'email', 'password'));
+                $account->save();
+
+
+                if ($account->wasRecentlyCreated) {
+                    $message = sprintf('Account [%s] has been created.', $account->name);
+                } else {
+                    $message = sprintf('Account [%s] has been updated.', $account->name);
+                }
+                DB::commit();
+            }
+            return redirect(route('support', ['section' => 'accounts']))->with('message', $message);
+        } else if (request()->isMethod('GET')) {
+            if (request('action') == 'edit') {
+                return view('admin/accounts', compact('account'));
+            } else {
+                $accounts = Account::query()->get();
+                return view('admin/accounts', compact('accounts', 'account'));
+            }
         }
     }
 
@@ -132,6 +173,7 @@ class SupportController extends Controller
         $countries = collect((new ISO3166())->all())->map(function ($e) {
             return (object)$e;
         });
+        $accounts = Account::query()->get();
         $client = Client::query()->findOrNew(request('client'));
         if (request()->isMethod('post')) {
             if (request('action') == 'delete') {
@@ -156,7 +198,7 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'email', 'notes', 'wallet', 'profits'));
+                $client->fill(request()->only('name', 'status', 'account_id', 'email', 'notes', 'wallet', 'profits'));
                 $password = Str::random(6);
                 $client->password = bcrypt($password);
                 $client->save();
@@ -178,10 +220,10 @@ class SupportController extends Controller
             return redirect(route('support', ['section' => 'clients']))->with('message', $message);
         } else if (request()->isMethod('GET')) {
             if (request('action') == 'edit') {
-                return view('admin/clients', compact('client', 'countries'));
+                return view('admin/clients', compact('client', 'countries', 'accounts'));
             } else {
                 $clients = Client::query()->orderBy('name')->get();
-                return view('admin/clients', compact('clients', 'client', 'countries'));
+                return view('admin/clients', compact('clients', 'client', 'countries', 'accounts'));
             }
         }
     }

@@ -52,7 +52,7 @@ class MailReader
      */
     public function search($criteria)
     {
-        $key = "imap_cache_" . md5($criteria);
+        $key = "imap_cache_" . $this->username . md5($criteria);
         if (!cache()->has($key)) {
             if ($this->imap === false) {
                 $this->open();

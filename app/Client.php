@@ -22,7 +22,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'notes', 'profits', 'wallet', 'status'
+        'name', 'email', 'password', 'notes', 'profits', 'wallet', 'status', 'account_id'
     ];
 
     /**
@@ -72,6 +72,11 @@ class Client extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(SupportTicket::class);
     }
 
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
@@ -82,32 +87,40 @@ class Client extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Request::class);
     }
 
-    public static function updateBalances(EmailExtract $emailExtract)
+    public static function updateBalances(Account $account, EmailExtract $emailExtract)
     {
-        $copyTime = AcruedAmount::query()->where('created_at', '<=', $emailExtract->time)->orderByDesc('created_at')->limit(1)->first();
+        $copyTime = AcruedAmount::query()
+            ->where('created_at', '<=', $emailExtract->time)
+            ->where('account_id', $account->id)
+            ->orderByDesc('created_at')->limit(1)->first();
         if ($copyTime) {
             $copyTime = $copyTime->created_at->addMinutes(45);
         } else {
             $copyTime = Transaction::query()
                 ->where('created_at', '<', $emailExtract->time->copy())
+                ->where('account_id', $account->id)
                 ->orderByDesc('created_at')
                 ->first()
                 ->created_at;
         }
 
-        $totalBalance = Transaction::query()->where('created_at', '<=', $copyTime)->balance();
+        $totalBalance = Transaction::query()
+            ->where('account_id', $account->id)
+            ->where('created_at', '<=', $copyTime)
+            ->balance();
         $profits = $emailExtract->balance - $totalBalance;
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;
-        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
-        Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($profits, $totalBalance, $emailExtract, $copyTime, $master, &$moneyLeft) {
+        AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'account_id' => $account->id, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
+        $account->clients()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($profits, $totalBalance, $account, $emailExtract, $copyTime, $master, &$moneyLeft) {
             foreach ($clients as $client) {
                 $clientBalance = $client->transactions()->where('created_at', '<=', $copyTime)->balance();
                 $transaction = new TransactionExtract();
                 $transaction->ticket = $emailExtract->mailId;
                 $transaction->item = $emailExtract->item;
                 $transaction->type = 'profit';
+                $transaction->account_id = $account->id;
                 $transaction->time = $emailExtract->time;
                 if ($totalBalance != 0) {
                     $transaction->amount = ($clientBalance / $totalBalance) * $profits * $client->profits / 100;
@@ -120,6 +133,7 @@ class Client extends Authenticatable implements MustVerifyEmail
         $transaction->ticket = $emailExtract->mailId;
         $transaction->item = $emailExtract->item;
         $transaction->type = 'profit';
+        $transaction->account_id = $account->id;
         $transaction->amount = $moneyLeft;
         $transaction->time = $emailExtract->time;
         Transaction::fromExtract($transaction, $master);

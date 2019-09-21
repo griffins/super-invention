@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\AcruedAmount;
+use App\Account;
 use App\Foundation\Statement\EmailExtract;
 use App\Mail\MailReader;
-use App\Transaction;
 use Illuminate\Console\Command;
 
 class ImportStatements extends Command
@@ -41,12 +40,15 @@ class ImportStatements extends Command
      */
     public function handle()
     {
-        $mail = new MailReader(env('MAILBOX_USERNAME'), env('MAILBOX_PASSWORD'));
-        foreach ($mail->emailsLastThreeDays() as $email) {
-            try {
-               EmailExtract::process($email);
-            } catch (\Throwable $e) {
-                report($e);
+        $accounts = Account::query()->get();
+        foreach ($accounts as $account) {
+            $mail = new MailReader($account->email, $account->password);
+            foreach ($mail->emailsLastThreeDays() as $email) {
+                try {
+                    EmailExtract::process($account,$email);
+                } catch (\Throwable $e) {
+                    report($e);
+                }
             }
         }
         $this->comment("Peak Memory:" . memory_get_peak_usage());

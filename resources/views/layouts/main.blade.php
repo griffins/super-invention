@@ -90,6 +90,10 @@
                                                    class="dropdown-item @if(request('section') =='users') active @endif">
                                                     Administrators
                                                 </a>
+                                                <a href="{{ route('support',['section' => 'accounts']) }}"
+                                                   class="dropdown-item @if(request('section') =='accounts') active @endif">
+                                                    Accounts
+                                                </a>
                                             @endif
                                             <a href="{{route('support',['section' => 'clients'])}}"
                                                class="dropdown-item @if(request('section') =='clients') active @endif">

@@ -146,10 +146,9 @@
                         <div class="modal-body">
                             @csrf
                             <div class="form-group text-primary" id="transaction_deposit">
-                                Please deposit the transaction amount to the bitcoin wallet below, the enter the
-                                details here to facilitate the confirmation.
+                                Please deposit the transaction amount to the bitcoin wallet below, the enter the details here to facilitate the confirmation.
                                 <br>
-                                Deposits will become active at 0:00 GMT
+                                Deposits will become active at the end of the current trading cycle, normally around 6 hours.
                                 <br>
                                 <br>
                                 <code>3898iVFmopLijwy2n4sRDnR5jWbSTekov4</code>

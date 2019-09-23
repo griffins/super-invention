@@ -228,7 +228,6 @@ class SupportController extends Controller
                     'email' => 'required|email|unique:clients,id,' . $client->id,
                     'status' => 'required',
                     'profits' => 'required|min:0:max:100',
-                    'wallet' => 'required',
                 ];
 
                 request()->validate($rules);

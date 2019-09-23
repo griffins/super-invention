@@ -78,6 +78,14 @@
                         </span>
                     @endif
                 </div>
+                <div class="col-auto">
+                    <label>&nbsp;</label>
+
+                    <label class="custom-control custom-checkbox mt-1">
+                        <input type="checkbox" class="custom-control-input"  name="client_deposit_total" @if(old('client_deposit_total',$client->client_deposit_total) == true) checked="" @endif>
+                        <span class="custom-control-label">Include in Client Deposit Total</span>
+                    </label>
+                </div>
             </div>
 {{--            <div class="row mt-3">--}}
 {{--                <div class="col-5">--}}

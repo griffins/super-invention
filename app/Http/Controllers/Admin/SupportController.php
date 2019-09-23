@@ -233,7 +233,7 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'account_id', 'email', 'notes', 'wallet', 'profits'));
+                $client->fill(request()->only('name', 'status', 'account_id','client_deposit_total', 'email', 'notes', 'wallet', 'profits'));
                 $password = Str::random(6);
                 $client->password = bcrypt($password);
                 $client->save();

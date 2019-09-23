@@ -22,7 +22,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'notes', 'profits', 'wallet', 'status', 'account_id'
+        'name', 'email', 'password', 'notes', 'profits', 'wallet', 'status', 'account_id', 'client_deposit_total'
     ];
 
     /**
@@ -120,7 +120,7 @@ class Client extends Authenticatable implements MustVerifyEmail
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;
-        dump($copyTime->format('jS H:i') . ': [' . $totalBalance .'(' . $count .')' . ' -> ' . currency($emailExtract->balance, true, 8) . '] P/L:' . currency($profits, true, 8));
+        dump($copyTime->format('jS H:i') . ': [' . $totalBalance . '(' . $count . ')' . ' -> ' . currency($emailExtract->balance, true, 8) . '] P/L:' . currency($profits, true, 8));
         AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'account_id' => $account->id, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
         Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($profits, $totalBalance, $totalClubBalance, $account, $emailExtract, $copyTime, $master, &$moneyLeft) {
             foreach ($clients as $client) {

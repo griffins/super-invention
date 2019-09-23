@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Transaction;
+use App\User;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -32,7 +33,8 @@ class HomeController extends Controller
             ];
             $clients = Client::query();
             $totalFund = Transaction::query()->balance();
-            return view('home', compact('clients', 'totalFund', 'periods'));
+            $totalClubDeposits = Transaction::query()->whereIn('client_id', Client::query()->where('client_deposit_total', true)->pluck('id'))->deposits()->sum('amount');
+            return view('home', compact('clients', 'totalFund', 'totalClubDeposits', 'periods'));
         } else {
             return redirect(route('client', ['client' => user()]));
         }

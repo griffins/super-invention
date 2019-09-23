@@ -34,8 +34,18 @@
                             <div class="text-right">
                                 &nbsp;&nbsp;BTC
                             </div>
-                            <div class="h1 m-0">{{ currency($totalFund,true,6) }}</div>
+                            <div class="h1 m-0">{{ currency($totalFund,true,4) }}</div>
                             <div class="text-muted mb-4">Total Club Fund</div>
+                        </div>
+                    </div>
+                </td>   <td colspan="2">
+                    <div class="card">
+                        <div class="card-body p-3 text-center">
+                            <div class="text-right">
+                                &nbsp;&nbsp;BTC
+                            </div>
+                            <div class="h1 m-0">{{ currency($totalClubDeposits,true,4) }}</div>
+                            <div class="text-muted mb-4">Total Club Deposits</div>
                         </div>
                     </div>
                 </td>
@@ -49,7 +59,7 @@
                                 @php
                                     $profit  =  \App\Transaction::query()->whereBetween('created_at',[$period->start,$period->end])->profit();
                                 @endphp
-                                <div class="h1 m-0">{{ currency($profit,true,8,!true) }}</div>
+                                <div class="h1 m-0">{{ currency($profit,true,4,!true) }}</div>
                                 <div class="text-muted mb-4"> Profit ({{ $period->name }})</div>
                             </div>
                         </div>

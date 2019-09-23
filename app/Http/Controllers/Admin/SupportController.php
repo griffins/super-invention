@@ -233,16 +233,16 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'account_id','client_deposit_total', 'email', 'notes', 'wallet', 'profits'));
-                $password = Str::random(6);
-                $client->password = bcrypt($password);
-                $client->save();
-
+                $client->fill(request()->only('name', 'status', 'account_id', 'email', 'notes', 'wallet', 'profits'));
                 if (request('status') == 'suspended') {
                     cache()->forever('logout_' . $client->id, true);
                 }
-
+                $client->client_deposit_total = request()->has('client_deposit_total');
+                $client->save();
                 if ($client->wasRecentlyCreated) {
+                    $password = Str::random(6);
+                    $client->password = bcrypt($password);
+                    $client->save();
                     $client->notify(new VerifyEmail());
                     $client->notify(new AccountConfirmation($password));
                     $message = sprintf('Client [%s] has been created.', $client->name);

@@ -91,9 +91,10 @@
                 </div>
             </div>
         </div>
-        @if($client->transactions()->count()>0)
-            <h5>Recent Transactions</h5>
-            <table class="table table-striped">
+        @php $transactions = $client->transactions()->orderByDesc('created_at')->paginate(); @endphp
+        @if($transactions->count()>0)
+            <h5 id="transactions">Recent Transactions</h5>
+            <table class="table table-striped" >
                 <thead>
                 <tr>
                     <td><b>ID</b></td>
@@ -104,7 +105,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($client->transactions()->orderByDesc('created_at')->paginate(20) as $transaction)
+                @foreach($transactions as $transaction)
                     <tr>
                         <td>
                             <b>
@@ -119,11 +120,15 @@
                 @endforeach
                 </tbody>
             </table>
+            {{ $transactions->fragment('transactions')->render([]) }}
         @else
             <div class="jumbotron text-center">
                 No transactions
             </div>
         @endif
+        <br>
+        <br>
+        <br>
         @if($client->requests()->count()>0)
             <h5>Transaction Requests</h5>
             <table class="table table-striped">
@@ -138,7 +143,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($client->requests()->orderByDesc('created_at')->paginate(20) as $transaction)
+                @foreach($client->requests()->orderByDesc('created_at')->paginate() as $transaction)
                     <tr>
                         <td>
                             <b>

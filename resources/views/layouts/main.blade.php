@@ -31,9 +31,6 @@
                                         <i class="dropdown-icon fe fe-user"></i> Profile
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="dropdown-icon fe fe-help-circle"></i> Need help?
-                                    </a>
                                     <form id="logout-form"
                                           action="{{  route('logout') }}"
                                           method="POST"
@@ -127,11 +124,11 @@
                                     </li>
                                 @endif
                             @else
-                                <li class="nav-item">
-                                    <a class="nav-link text-white @if(route_matches('support.ticket')) active @endif"
-                                       href="{{ route('support.ticket') }}"> <i class="fe fe-life-buoy"></i>Help
-                                        Desk</a>
-                                </li>
+{{--                                <li class="nav-item">--}}
+{{--                                    <a class="nav-link text-white @if(route_matches('support.ticket')) active @endif"--}}
+{{--                                       href="{{ route('support.ticket') }}"> <i class="fe fe-life-buoy"></i>Help--}}
+{{--                                        Desk</a>--}}
+{{--                                </li>--}}
                             @endif
                         </ul>
                     </div>

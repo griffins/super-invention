@@ -117,11 +117,11 @@
                                     </li>
                                 @endif
                                 @if(user()->id != 4)
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"
-                                           href="{{ route('support.resolution') }}"> <i class="fe fe-life-buoy"></i>Help
-                                            Desk</a>
-                                    </li>
+{{--                                    <li class="nav-item">--}}
+{{--                                        <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"--}}
+{{--                                           href="{{ route('support.resolution') }}"> <i class="fe fe-life-buoy"></i>Help--}}
+{{--                                            Desk</a>--}}
+{{--                                    </li>--}}
                                 @endif
                             @else
 {{--                                <li class="nav-item">--}}

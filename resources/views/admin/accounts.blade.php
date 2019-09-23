@@ -140,7 +140,7 @@
             @foreach($accounts as $k => $account)
                 <tr>
                     <td>{{ $k+1 }}</td>
-                    <td><i style="font-size: larger;font-weight: bolder" class=" @if(cache('default_wallet') == $account->id) text-success @endif  fe fe-check-circle"></i>{{$account->name}}</td>
+                    <td><i style="font-size: larger;font-weight: bolder" class=" @if(cache('default_wallet') == $account->id) text-danger @endif  fe fe-check-circle"></i>{{$account->name}}</td>
                     <td>{{$account->email}}</td>
                     <td class="text-left">{{$account->created_at->format('jS M, Y')}}</td>
                     <td>

@@ -79,19 +79,19 @@
                     @endif
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-5">
-                    <label>Wallet Address</label>
-                    <input type="text" name="wallet" value="{{ old('wallet',$client->wallet) }}"
-                           class="form-control"
-                           placeholder="Wallet Address">
-                    @if ($errors->has('wallet'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('wallet') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
+{{--            <div class="row mt-3">--}}
+{{--                <div class="col-5">--}}
+{{--                    <label>Wallet Address</label>--}}
+{{--                    <input type="text" name="wallet" value="{{ old('wallet',$client->wallet) }}"--}}
+{{--                           class="form-control"--}}
+{{--                           placeholder="Wallet Address">--}}
+{{--                    @if ($errors->has('wallet'))--}}
+{{--                        <span class="invalid-feedback d-block" role="alert">--}}
+{{--                            <strong>{{ $errors->first('wallet') }}</strong>--}}
+{{--                        </span>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="row mt-3">
                 <div class="col-8">

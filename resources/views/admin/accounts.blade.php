@@ -72,8 +72,8 @@
                         <label>Wallet Address QR</label>
                         <div class="card card-profile">
                             <div class="card-body text-center">
-                    <span class="img avatar avatar-xxl"
-                          style="background-image: url({{ $account->photo }})">
+                    <span class="img rounded-0 avatar "
+                          style="background-image: url({{ $account->photo }});width:200px; height:200px">
   <a href="javascript:void(0)" onclick="changeProfile()" class="avatar-status fe fe-camera"
      style="background: transparent; font-size: 16px;text-decoration: none">
   </a>
@@ -140,7 +140,7 @@
             @foreach($accounts as $k => $account)
                 <tr>
                     <td>{{ $k+1 }}</td>
-                    <td><i class="dropdown-icon @if(cache('default_wallet') == $account->id) text-success @endif fe fe-check-circle"></i>{{$account->name}}</td>
+                    <td><i style="font-size: larger;font-weight: bolder" class=" @if(cache('default_wallet') == $account->id) text-success @endif  fe fe-check-circle"></i>{{$account->name}}</td>
                     <td>{{$account->email}}</td>
                     <td class="text-left">{{$account->created_at->format('jS M, Y')}}</td>
                     <td>

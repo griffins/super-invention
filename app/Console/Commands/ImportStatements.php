@@ -43,7 +43,7 @@ class ImportStatements extends Command
         $accounts = Account::query()->get();
         foreach ($accounts as $account) {
             $mail = new MailReader($account->email, $account->password);
-            foreach ($mail->emailsLastThreeDays() as $email) {
+            foreach ($mail->emailsLastFourDays() as $email) {
                 try {
                     EmailExtract::process($account,$email);
                 } catch (\Throwable $e) {

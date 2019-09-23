@@ -109,12 +109,20 @@ class Client extends Authenticatable implements MustVerifyEmail
             ->where('account_id', $account->id)
             ->where('created_at', '<=', $copyTime)
             ->balance();
+        $count = Transaction::query()
+            ->where('account_id', $account->id)
+            ->where('created_at', '<=', $copyTime)->count();
+        $totalClubBalance = Transaction::query()
+            ->where('created_at', '<=', $copyTime)
+            ->balance();
+
         $profits = $emailExtract->balance - $totalBalance;
         $master = Client::query()->find(1);
         DB::beginTransaction();
         $moneyLeft = $profits;
+        dump($copyTime->format('jS H:i') . ': [' . $totalBalance .'(' . $count .')' . ' -> ' . currency($emailExtract->balance, true, 8) . '] P/L:' . currency($profits, true, 8));
         AcruedAmount::query()->create(['amount' => $emailExtract->balance, 'account_id' => $account->id, 'created_at' => $emailExtract->time, 'message_id' => $emailExtract->mailId, 'item' => 'BTC']);
-        Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($profits, $totalBalance, $account, $emailExtract, $copyTime, $master, &$moneyLeft) {
+        Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($profits, $totalBalance, $totalClubBalance, $account, $emailExtract, $copyTime, $master, &$moneyLeft) {
             foreach ($clients as $client) {
                 $clientBalance = $client->transactions()->where('created_at', '<=', $copyTime)->balance();
                 $transaction = new TransactionExtract();
@@ -124,7 +132,7 @@ class Client extends Authenticatable implements MustVerifyEmail
                 $transaction->account_id = $account->id;
                 $transaction->time = $emailExtract->time;
                 if ($totalBalance != 0) {
-                    $transaction->amount = ($clientBalance / $totalBalance) * $profits * $client->profits / 100;
+                    $transaction->amount = ($clientBalance / $totalClubBalance) * $profits * $client->profits / 100;
                     $moneyLeft -= $transaction->amount;
                     Transaction::fromExtract($transaction, $client);
                 }

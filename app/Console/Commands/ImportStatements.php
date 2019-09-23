@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Account;
+use App\AcruedAmount;
 use App\Foundation\Statement\EmailExtract;
 use App\Mail\MailReader;
+use App\Transaction;
 use Illuminate\Console\Command;
 
 class ImportStatements extends Command
@@ -41,14 +43,27 @@ class ImportStatements extends Command
     public function handle()
     {
         $accounts = Account::query()->get();
+        Transaction::query()->where('created_at', '>=', now()->subDays(12))->where('type', 'profit')->delete();
+        AcruedAmount::query()->where('created_at', '>=', now()->subDays(12))->delete();
+        $mails = collect();
+
         foreach ($accounts as $account) {
             $mail = new MailReader($account->email, $account->password);
-            foreach ($mail->emailsLastFourDays() as $email) {
-                try {
-                    EmailExtract::process($account,$email);
-                } catch (\Throwable $e) {
-                    report($e);
-                }
+            $mails = $mails->merge($mail->emailsLastFourDays()->map(function ($a) use ($account) {
+                $a->account = &$account;
+                return $a;
+            }));
+        }
+
+        $mails = $mails->sort(function ($a, $b) {
+            return $a->udate > $b->udate;
+        });
+
+        foreach ($mails as $email) {
+            try {
+                EmailExtract::process($email->account, $email);
+            } catch (\Throwable $e) {
+                report($e);
             }
         }
         $this->comment("Peak Memory:" . memory_get_peak_usage());

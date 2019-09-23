@@ -42,7 +42,7 @@ class MailReader
 
     public function emailsLastFourDays()
     {
-        $criteria = 'SINCE "' . now()->subDays(4)->startOfDay()->format("j F Y") . '"';
+        $criteria = 'SINCE "' . now()->subDays(14)->startOfDay()->format("j F Y") . '"';
         return $this->search($criteria);
     }
 
@@ -66,7 +66,7 @@ class MailReader
                 return $email;
             });
             $this->close();
-            cache()->put($key, $data, now()->addMinutes(3));
+            cache()->put($key, $data, now()->addMinutes(30));
         }
         return cache($key);
 

@@ -10,6 +10,10 @@ class Photo extends Model
     {
         return asset('images/avatar.png');
     }
+    public static function wallet()
+    {
+        return asset('images/cross.svg');
+    }
 
     public function profile()
     {

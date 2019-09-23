@@ -65,6 +65,38 @@
                     @endif
                 </div>
             </div>
+            <br>
+            <div class="row">
+                @if($account->exists)
+                    <div class="col-4">
+                        <label>Wallet Address QR</label>
+                        <div class="card card-profile">
+                            <div class="card-body text-center">
+                    <span class="img avatar avatar-xxl"
+                          style="background-image: url({{ $account->photo }})">
+  <a href="javascript:void(0)" onclick="changeProfile()" class="avatar-status fe fe-camera"
+     style="background: transparent; font-size: 16px;text-decoration: none">
+  </a>
+
+</span>
+
+
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                <div class="col-4">
+                    <label>Wallet Address</label>
+                    <input type="text" name="wallet" value="{{ old('wallet',$account->wallet) }}"
+                           class="form-control"
+                           placeholder="wallet for account">
+                    @if ($errors->has('wallet'))
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $errors->first('wallet') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
 
             <div class="row mt-3">
                 <div class="col-3">
@@ -82,6 +114,13 @@
               action="{{ route('support',['section' => 'accounts','action' => 'delete','client' => $account]) }}"
               method="POST">
             @csrf
+        </form>
+        <form method="post" id="wallet-form"
+              action="{{ route('support',['section' =>'accountQr','account' => $account]) }}"
+              enctype="multipart/form-data">
+            @csrf
+            <input name="image" id="profile" type="file" style="display: none"
+                   accept="image/png, image/jpeg">
         </form>
     @else
         <div class="s">
@@ -105,7 +144,7 @@
                     <td>
                         <div class="item-action dropdown">
                             <a href="javascript:void(0)" data-toggle="dropdown" class="icon" aria-expanded="false"><i
-                                        class="fe fe-more-vertical"></i></a>
+                                    class="fe fe-more-vertical"></i></a>
                             <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
                                  style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
                                 @if(user()->id!=4)
@@ -152,6 +191,16 @@
             })
         }
 
-        changePassword()
+        changePassword();
+
+        function changeProfile() {
+            $("#profile").trigger('click')
+        }
+
+        $(document).ready(function () {
+            $("#profile").on('change', function () {
+                document.getElementById('wallet-form').submit();
+            });
+        });
     </script>
 @endsection

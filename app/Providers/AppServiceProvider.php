@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Account;
 use App\Attachment;
 use App\Client;
 use App\File;
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         require app_path("Foundation/Utils/helpers.php");
         Schema::defaultStringLength(191);
-        $models = [Client::class, User::class, SupportTicket::class, Message::class, File::class, Attachment::class];
+        $models = [Client::class, Account::class, User::class, SupportTicket::class, Message::class, File::class, Attachment::class];
         $map = [];
 
         foreach ($models as $a) {

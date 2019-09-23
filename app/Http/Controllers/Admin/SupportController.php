@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Account;
 use App\Client;
+use App\File;
 use App\Http\Controllers\Controller;
 use App\Invoice;
 use App\Mail\MailMessage;
@@ -12,6 +13,7 @@ use App\Notifications\AccountPasswordReset;
 use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
 use App\Notifications\TransactionConfirmation;
+use App\Photo;
 use App\Request;
 use App\Server;
 use App\User;
@@ -42,6 +44,8 @@ class SupportController extends Controller
                 return $this->users();
             case 'accounts':
                 return $this->accountBox();
+            case 'accountQr':
+                return $this->accountQr();
             case 'requests':
                 return $this->requests();
             case 'clients':
@@ -68,7 +72,7 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $account->fill(request()->only('name', 'email', 'password'));
+                $account->fill(request()->only('name', 'email', 'wallet', 'password'));
                 $account->save();
 
 
@@ -88,6 +92,34 @@ class SupportController extends Controller
                 return view('admin/accounts', compact('accounts', 'account'));
             }
         }
+    }
+
+    private function accountQr()
+    {
+        $account = Account::query()->findOrNew(request('account'));
+        if (request()->isMethod('post')) {
+
+            DB::beginTransaction();
+            $file = File::from(request()->file('image'), 'images');
+            $photo = new Photo();
+            $photo->file()->associate($file);
+            $photo->profile_type = class_basename($account);
+            $photo->profile_id = $account->id;
+
+            $account->photos()->get()->map(function ($e) {
+                $e->delete();
+            });
+
+            $account->photos()->save($photo);
+
+            if ($account->wasRecentlyCreated) {
+                $message = sprintf('Account [%s] has been created.', $account->name);
+            } else {
+                $message = sprintf('Account [%s] has been updated.', $account->name);
+            }
+            DB::commit();
+        }
+        return redirect(route('support', ['section' => 'accounts']))->with('message', $message);
     }
 
     private function users()

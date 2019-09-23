@@ -93,6 +93,7 @@ class Client extends Authenticatable implements MustVerifyEmail
             ->where('created_at', '<=', $emailExtract->time)
             ->where('account_id', $account->id)
             ->orderByDesc('created_at')->limit(1)->first();
+
         if ($copyTime) {
             $copyTime = $copyTime->created_at->addMinutes(45);
         } else {

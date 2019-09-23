@@ -13,6 +13,7 @@ use App\Notifications\AccountPasswordReset;
 use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
 use App\Notifications\TransactionConfirmation;
+use App\Notifications\TransactionRejected;
 use App\Photo;
 use App\Request;
 use App\Server;
@@ -88,6 +89,9 @@ class SupportController extends Controller
             if (request('action') == 'edit') {
                 return view('admin/accounts', compact('account'));
             } else {
+                if (request('action') == 'default') {
+                    cache()->forever('default_wallet', $account->id);
+                }
                 $accounts = Account::query()->get();
                 return view('admin/accounts', compact('accounts', 'account'));
             }
@@ -181,7 +185,7 @@ class SupportController extends Controller
                 $request->status = 'rejected';
                 $request->save();
                 $message = 'Deleted';
-//                $request->client->notify(new TransactionRejected($request, request('reason')));
+                $request->client->notify(new TransactionRejected($request, request('reason')));
             } else {
                 DB::beginTransaction();
                 $transaction = $request->apply(request('amount'), request('date'));

@@ -146,14 +146,17 @@
                         <div class="modal-body">
                             @csrf
                             <div class="form-group text-primary" id="transaction_deposit">
-                                Please deposit the transaction amount to the bitcoin wallet below, the enter the details here to facilitate the confirmation.
+                                Please deposit the transaction amount to the bitcoin wallet below, the enter the details
+                                here to facilitate the confirmation.
                                 <br>
-                                Deposits will become active at the end of the current trading cycle, normally around 6 hours.
+                                Deposits will become active at the end of the current trading cycle, normally around 6
+                                hours.
                                 <br>
                                 <br>
-                                <code>3898iVFmopLijwy2n4sRDnR5jWbSTekov4</code>
-
-                                <img class="" src="{{ asset('images/wallet.jpg') }}">
+                                <code>{{ $account->wallet }}</code>
+                                <br>
+                                <br>
+                                <img class="" src="{{ $account->photo }}">
                             </div>
                             <div class="form-group text-primary" id="transaction_withdraw">
                                 Please note that withdrawals are processed within 24-48 hours.

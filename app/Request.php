@@ -20,6 +20,7 @@ class Request extends Model
                 'ticket' => md5($this->client->id . $this->id . time()),
                 'amount' => $amount,
                 'created_at' => $date,
+                'account_id' => cache('default_wallet'),
                 'type' => $this->operation,
                 'item' => 'BTC',
                 'client_id' => $this->client->id

@@ -129,6 +129,7 @@
         <table class="table table-striped mt-3">
             <thead>
             <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th class="text-left">Created</th>
@@ -136,9 +137,10 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($accounts as $account)
+            @foreach($accounts as $k => $account)
                 <tr>
-                    <td>{{$account->name}}</td>
+                    <td>{{ $k+1 }}</td>
+                    <td><i class="dropdown-icon @if(cache('default_wallet') == $account->id) text-success @endif fe fe-check-circle"></i>{{$account->name}}</td>
                     <td>{{$account->email}}</td>
                     <td class="text-left">{{$account->created_at->format('jS M, Y')}}</td>
                     <td>
@@ -151,7 +153,11 @@
                                     <a href="{{ route('support',['action' => 'edit','section' => 'accounts','account' => $account]) }}"
                                        class="dropdown-item"><i class="dropdown-icon fe fe-edit-2">
 
-                                        </i> Edit </a>
+                                        </i> Edit Account </a>
+                                    <a href="{{ route('support',['action' => 'default','section' => 'accounts','account' => $account]) }}"
+                                       class="dropdown-item"><i class="dropdown-icon fe fe-check-circle">
+
+                                        </i> Set Default Wallet </a>
                                 @endif
                             </div>
                         </div>

@@ -149,6 +149,42 @@ class Client extends Authenticatable implements MustVerifyEmail
         DB::commit();
     }
 
+    public static function updateBalances2(Account $account, $profits, $date)
+    {
+        $master = Client::query()->find(1);
+        DB::beginTransaction();
+        $moneyLeft = $profits;
+        $totalClubBalance = Transaction::query()
+            ->balance();
+        AcruedAmount::query()->create(['amount' => $profits, 'account_id' => $account->id, 'created_at' => $date, 'message_id' => md5($date), 'item' => 'BTC']);
+        Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($totalClubBalance, $profits, $date, $account, $master, &$moneyLeft) {
+            foreach ($clients as $client) {
+                $clientBalance = $client->transactions()->balance();
+
+                $transaction = new TransactionExtract();
+                $transaction->ticket = md5($date);
+                $transaction->item = 'BTC';
+                $transaction->type = 'profit';
+                $transaction->account_id = $account->id;
+                $transaction->time = $date;
+
+                $transaction->amount = ($clientBalance / $totalClubBalance) * $profits * $client->profits / 100;
+                $moneyLeft -= $transaction->amount;
+                Transaction::fromExtract($transaction, $client);
+
+            }
+        });
+        $transaction = new TransactionExtract();
+        $transaction->ticket = md5($date);
+        $transaction->item = 'BTC';
+        $transaction->type = 'profit';
+        $transaction->account_id = $account->id;
+        $transaction->amount = $moneyLeft;
+        $transaction->time = $date;
+        Transaction::fromExtract($transaction, $master);
+        DB::commit();
+    }
+
     /**
      * Send the password reset notification.
      *

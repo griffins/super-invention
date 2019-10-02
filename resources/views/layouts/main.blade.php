@@ -77,7 +77,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-white @if(route_matches('support')) active @endif"
                                            href="{{ route('support') }}" data-toggle="dropdown"> <i
-                                                    class="fe fe-settings"></i>
+                                                class="fe fe-settings"></i>
                                             Administration
                                         </a>
 
@@ -96,12 +96,15 @@
                                                class="dropdown-item @if(request('section') =='clients') active @endif">
                                                 Clients
                                             </a>
-                                            @if(user()->id != 4)
-                                                <a href="{{route('support',['section' => 'requests'])}}"
-                                                   class="dropdown-item @if(request('section') =='requests') active @endif">
-                                                    Requests
-                                                </a>
-                                            @endif
+                                            <a href="{{route('support',['section' => 'requests'])}}"
+                                               class="dropdown-item @if(request('section') =='requests') active @endif">
+                                                Requests
+                                            </a>
+                                            <a href="#"
+                                               data-toggle="modal" data-target="#profit"
+                                               class="dropdown-item">
+                                                Profits
+                                            </a>
                                         </div>
                                     </li>
                                     @if(user()->id != 4)
@@ -117,23 +120,63 @@
                                     </li>
                                 @endif
                                 @if(user()->id != 4)
-{{--                                    <li class="nav-item">--}}
-{{--                                        <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"--}}
-{{--                                           href="{{ route('support.resolution') }}"> <i class="fe fe-life-buoy"></i>Help--}}
-{{--                                            Desk</a>--}}
-{{--                                    </li>--}}
+                                    {{--                                    <li class="nav-item">--}}
+                                    {{--                                        <a class="nav-link text-white @if(route_matches('support.resolution')) active @endif"--}}
+                                    {{--                                           href="{{ route('support.resolution') }}"> <i class="fe fe-life-buoy"></i>Help--}}
+                                    {{--                                            Desk</a>--}}
+                                    {{--                                    </li>--}}
                                 @endif
                             @else
-{{--                                <li class="nav-item">--}}
-{{--                                    <a class="nav-link text-white @if(route_matches('support.ticket')) active @endif"--}}
-{{--                                       href="{{ route('support.ticket') }}"> <i class="fe fe-life-buoy"></i>Help--}}
-{{--                                        Desk</a>--}}
-{{--                                </li>--}}
+                                {{--                                <li class="nav-item">--}}
+                                {{--                                    <a class="nav-link text-white @if(route_matches('support.ticket')) active @endif"--}}
+                                {{--                                       href="{{ route('support.ticket') }}"> <i class="fe fe-life-buoy"></i>Help--}}
+                                {{--                                        Desk</a>--}}
+                                {{--                                </li>--}}
                             @endif
                         </ul>
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="profit" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form method="POST" action="{{ route('profit') }}">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle">Profit Transaction</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @csrf
+                                <div class="form-group">
+                                    <label class="col-form-label">Account:</label>
+                                    <select class="form-control" name="account_id">
+                                        @foreach(\App\Account::query()->get() as $account)
+                                            <option value="{{$account->id}}">{{ $account->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Amount:</label>
+                                    <input type="number" name="amount" step="0.00000001" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    {{ date_picker('Date','date', now()->toDateTimeString()) }}
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="my-3 my-md-5 mx-4">
                 <div class="page-header mx-2">
                     <h1 class="page-title w-100 text-white">

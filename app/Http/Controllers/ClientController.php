@@ -9,6 +9,7 @@ use App\Request;
 use App\SupportTicket;
 use App\Transaction;
 use App\User;
+use Carbon\Carbon;
 use function request;
 
 class ClientController extends Controller
@@ -32,6 +33,12 @@ class ClientController extends Controller
         ];
         $account = Account::query()->findOrFail(cache('default_wallet'));
         return view('client.profile', compact('client', 'periods', 'types', 'account'));
+    }
+
+    public function profit()
+    {
+        Client::updateBalances2(Account::query()->findOrFail(request('account_id')), request('amount'), Carbon::parse(request('date')));
+        return back()->withMessage('Successful');
     }
 
     public function openTicket(Client $client)

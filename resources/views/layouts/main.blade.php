@@ -159,8 +159,19 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Amount:</label>
-                                    <input type="number" name="amount" step="0.00000001" class="form-control">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="col-form-label">Profit Amount:</label>
+                                            <select class="form-control" name="value_type">
+                                                <option value="btc">BTC Value</option>
+                                                <option value="percentage">% Value</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="col-form-label">Amount:</label>
+                                            <input type="number" name="amount" step="0.00000001" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">

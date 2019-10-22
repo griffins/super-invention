@@ -37,7 +37,7 @@ class ClientController extends Controller
 
     public function profit()
     {
-        Client::updateBalances2(Account::query()->findOrFail(request('account_id')), request('amount'), Carbon::parse(request('date')));
+        Client::updateBalances2(Account::query()->findOrFail(request('account_id')), request('value_type'), request('amount'), Carbon::parse(request('date')));
         return back()->withMessage('Successful');
     }
 

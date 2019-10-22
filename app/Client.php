@@ -149,13 +149,18 @@ class Client extends Authenticatable implements MustVerifyEmail
         DB::commit();
     }
 
-    public static function updateBalances2(Account $account, $profits, $date)
+    public static function updateBalances2(Account $account, $profit_type, $profit_value, $date)
     {
         $master = Client::query()->find(1);
         DB::beginTransaction();
-        $moneyLeft = $profits;
         $totalClubBalance = Transaction::query()
             ->balance();
+        if ($profit_type == 'btc') {
+            $profits = $profit_value;
+        } else {
+            $profits = $profit_value * $totalClubBalance / 100;
+        }
+        $moneyLeft = $profits;
         AcruedAmount::query()->create(['amount' => $profits, 'account_id' => $account->id, 'created_at' => $date, 'message_id' => md5($date), 'item' => 'BTC']);
         Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($totalClubBalance, $profits, $date, $account, $master, &$moneyLeft) {
             foreach ($clients as $client) {

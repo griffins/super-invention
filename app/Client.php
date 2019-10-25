@@ -153,7 +153,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         $master = Client::query()->find(1);
         DB::beginTransaction();
-        $totalClubBalance = Transaction::query()
+        $totalClubBalance = Transaction::query()->where('created_at','<=',$date)
             ->balance();
         if ($profit_type == 'btc') {
             $profits = $profit_value;

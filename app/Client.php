@@ -153,7 +153,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         $master = Client::query()->find(1);
         DB::beginTransaction();
-        $totalClubBalance = Transaction::query()->where('created_at','<=',$date)
+        $totalClubBalance = Transaction::query()->where('created_at', '<=', $date)
             ->balance();
         if ($profit_type == 'btc') {
             $profits = $profit_value;
@@ -164,7 +164,7 @@ class Client extends Authenticatable implements MustVerifyEmail
         AcruedAmount::query()->create(['amount' => $profits, 'account_id' => $account->id, 'created_at' => $date, 'message_id' => md5($date), 'item' => 'BTC']);
         Client::query()->whereNotIn('id', [1])->chunk(20, function ($clients) use ($totalClubBalance, $profits, $date, $account, $master, &$moneyLeft) {
             foreach ($clients as $client) {
-                $clientBalance = $client->transactions()->balance();
+                $clientBalance = $client->transactions()->where('created_at', '<=', $date)->balance();
 
                 $transaction = new TransactionExtract();
                 $transaction->ticket = md5($date);

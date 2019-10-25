@@ -43,8 +43,6 @@ class ImportStatements extends Command
     public function handle()
     {
         $accounts = Account::query()->get();
-        Transaction::query()->where('created_at', '>=', now()->subDays(12))->where('type', 'profit')->delete();
-        AcruedAmount::query()->where('created_at', '>=', now()->subDays(12))->delete();
         $mails = collect();
 
         foreach ($accounts as $account) {

@@ -149,8 +149,9 @@
                                 Please deposit the transaction amount to the bitcoin wallet below, the enter the details
                                 here to facilitate the confirmation.
                                 <br>
-                                Deposits will become active at the end of the current trading cycle, normally around 6
-                                hours.
+                                Deposits will become active the following Sunday.
+                                <br>
+                                Please be aware that there is a 1% charge by the payment gateway.
                                 <br>
                                 <br>
                                 <code>{{ $account->wallet }}</code>
@@ -159,7 +160,7 @@
                                 <img class="" src="{{ $account->photo }}">
                             </div>
                             <div class="form-group text-primary" id="transaction_withdraw">
-                                Please note that withdrawals are processed within 24-48 hours.
+                                Please note that funds are locked in for 60 days.
                                 <br>
                                 Enter the wallet id below and the amount you wish to withdraw from your account.
                             </div>

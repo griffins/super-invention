@@ -8,7 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AccountConfirmation extends Notification
+class RegistrationRequest extends Notification
 {
     use Queueable;
 
@@ -44,10 +44,10 @@ class AccountConfirmation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line(sprintf('Howdy %s, your %s account has been confirmed',
-                explode(' ', $notifiable->name)[0], config('app.name')))
-                ->action(sprintf('Go to %s', config('app.name')), url('/'))
-                ->line(sprintf('Thank you for using %s!', config('app.name')));
+            ->line(sprintf('Howdy %s, we have a new registration request from %s',
+                explode(' ', $notifiable->name)[0], $this->transaction->name))
+            ->action(sprintf('Go to %s', config('app.name')), url('/'))
+            ->line(sprintf('Thank you for using %s!', config('app.name')));
     }
 
 

@@ -8,20 +8,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AccountConfirmation extends Notification
+class AccountRejected extends Notification
 {
     use Queueable;
 
-    public $transaction;
+    public $request;
+    public $reason;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($trasaction)
+    public function __construct($request, $reason)
     {
-        $this->transaction = $trasaction;
+        $this->request = $request;
+        $this->reason = $reason;
     }
 
     /**
@@ -44,10 +46,12 @@ class AccountConfirmation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line(sprintf('Howdy %s, your %s account has been confirmed',
-                explode(' ', $notifiable->name)[0], config('app.name')))
-                ->action(sprintf('Go to %s', config('app.name')), url('/'))
-                ->line(sprintf('Thank you for using %s!', config('app.name')));
+            ->line(sprintf('Howdy %s, your %s account has been rejected, Reason: %s',
+                explode(' ', $notifiable->name)[0],
+                config('app.name'),
+                $this->reason))
+            ->action(sprintf('Go to %s', config('app.name')), url('/'))
+            ->line(sprintf('Thank you for using %s!', config('app.name')));
     }
 
 

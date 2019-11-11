@@ -100,6 +100,10 @@
                                                class="dropdown-item @if(request('section') =='requests') active @endif">
                                                 Requests
                                             </a>
+                                            <a href="{{route('support',['section' => 'registrations'])}}"
+                                               class="dropdown-item @if(request('section') =='registrations') active @endif">
+                                                Registration Requests
+                                            </a>
                                             <a href="#"
                                                data-toggle="modal" data-target="#profit"
                                                class="dropdown-item">

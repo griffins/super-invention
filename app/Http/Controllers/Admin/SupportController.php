@@ -10,11 +10,13 @@ use App\Invoice;
 use App\Mail\MailMessage;
 use App\Notifications\AccountConfirmation;
 use App\Notifications\AccountPasswordReset;
+use App\Notifications\AccountRejected;
 use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
 use App\Notifications\TransactionConfirmation;
 use App\Notifications\TransactionRejected;
 use App\Photo;
+use App\Registration;
 use App\Request;
 use App\Server;
 use App\User;
@@ -49,6 +51,8 @@ class SupportController extends Controller
                 return $this->accountQr();
             case 'requests':
                 return $this->requests();
+            case 'registrations':
+                return $this->registrations();
             case 'clients':
                 return $this->accounts();
             default:
@@ -124,6 +128,32 @@ class SupportController extends Controller
             DB::commit();
         }
         return redirect(route('support', ['section' => 'accounts']))->with('message', $message);
+    }
+
+    private function registrations()
+    {
+        $registration = Registration::query()->findOrNew(request('request'));
+        if (request()->isMethod('GET')) {
+            if (request()->has('action')) {
+                if (request('action') == 'reject') {
+                    $registration->status = 'rejected';
+                    $registration->save();
+                    $message = 'Deleted';
+                    $registration->notify(new AccountRejected($registration, 'incomplete details'));
+                } else {
+                    DB::beginTransaction();
+                    $transaction = $registration->apply();
+                    $message = sprintf('Request [%s] has been updated.', $registration->name);
+                    $registration->notify(new AccountConfirmation($transaction));
+                    $registration->status = 'approved';
+                    $registration->save();
+                    DB::commit();
+                }
+                return redirect(route('support', ['section' => 'requests']))->with('message', $message);
+            }
+            $registrations = Registration::query()->where('status', request('status', 'pending'))->get();
+            return view('admin/registrations', compact('registrations'));
+        }
     }
 
     private function users()

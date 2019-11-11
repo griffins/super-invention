@@ -8,7 +8,7 @@
                 </div>
                 <form class="card" action="{{ route('login') }}" method="post">
                     <div class="card-body p-6">
-                        <div class="card-title">Login to your account</div>
+                        <div class="card-title">Login to your account sdjsjds </div>
                         <div class="form-group">
                             <label class="form-label">Email address</label>
                             <input id="email" placeholder="Email/Phone"
@@ -46,9 +46,9 @@
                         </div>
                     </div>
                 </form>
-{{--                <div class="text-center text-muted">--}}
-{{--                    Don't have account yet? <a href="{{ route('register') }}">Sign up</a>--}}
-{{--                </div>--}}
+                <div class="text-center text-muted">
+                    <a href="{{ route('register') }}"> Don't have account yet? Sign up</a>
+                </div>
             </div>
         </div>
     </div>

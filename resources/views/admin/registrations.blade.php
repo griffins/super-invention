@@ -109,10 +109,10 @@
                 <div class="d-flex align-items-center pt-5 mt-auto">
                     <div class="ml-auto text-muted">
                         <a
-                            href="{{ route('support',['action' => 'reject','section' => 'requests','request' => $request]) }}"
+                            href="{{ route('support',['action' => 'reject','section' => 'registrations','request' => $request]) }}"
                             class="d-md-inline-block"><i class="dropdown-icon fe fe-trash"></i> Reject </a>
 
-                        <a href="{{ route('support',['action' => 'confirm','section' => 'requests','request' => $request]) }}"
+                        <a href="{{ route('support',['action' => 'confirm','section' => 'registrations','request' => $request]) }}"
                            class="ml-3 d-md-inline-block"><i class="dropdown-icon fe fe-check-circle"></i>
                             Confirm
                         </a>

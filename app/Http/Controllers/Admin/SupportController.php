@@ -149,7 +149,7 @@ class SupportController extends Controller
                     $registration->save();
                     DB::commit();
                 }
-                return redirect(route('support', ['section' => 'requests']))->with('message', $message);
+                return redirect(route('support', ['section' => 'registrations']))->with('message', $message);
             }
             $registrations = Registration::query()->where('status', request('status', 'pending'))->get();
             return view('admin/registrations', compact('registrations'));

@@ -191,7 +191,7 @@
                     </div>
                 </form>
                 <div class="text-center">
-                    <a href="{{ route('login') }}" style="color:blue"> Already have account? Sign in</a>
+                    <a href="{{ route('login') }}" style="color:white"> Already have account? Sign in</a>
                 </div>
             </div>
         </div>

@@ -4,11 +4,11 @@
 @endsection
 @section('card-options')
     @if(request('status') == 'approved')
-        <a href="{{ route('support',['section' => 'requests']) }}"
+        <a href="{{ route('support',['section' => 'registrations']) }}"
            class="btn btn-outline-primary btn-sm mr-2">
             Pending
         </a>
-        <a href="{{ route('support',['section' => 'requests','status' =>'rejected']) }}"
+        <a href="{{ route('support',['section' => 'registrations','status' =>'rejected']) }}"
            class="btn btn-outline-primary btn-sm">
             Rejected
         </a>

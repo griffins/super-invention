@@ -13,20 +13,20 @@
             Rejected
         </a>
     @elseif(request('status') == 'rejected')
-        <a href="{{ route('support',['section' => 'requests']) }}"
+        <a href="{{ route('support',['section' => 'registrations']) }}"
            class="btn btn-outline-primary btn-sm mr-2">
             Pending
         </a>
-        <a href="{{ route('support',['section' => 'requests','status' =>'approved']) }}"
+        <a href="{{ route('support',['section' => 'registrations','status' =>'approved']) }}"
            class="btn btn-outline-primary btn-sm btn-success">
             Approved
         </a>
     @elseif(request('status','pending') == 'pending')
-        <a href="{{ route('support',['section' => 'requests','status' =>'rejected']) }}"
+        <a href="{{ route('support',['section' => 'registrations','status' =>'rejected']) }}"
            class="btn btn-outline-primary btn-sm mr-2">
             Rejected
         </a>
-        <a href="{{ route('support',['section' => 'requests','status' =>'approved']) }}"
+        <a href="{{ route('support',['section' => 'registrations','status' =>'approved']) }}"
            class="btn btn-outline-primary btn-sm btn-success">
             Approved
         </a>

@@ -132,7 +132,7 @@ class Client extends Authenticatable implements MustVerifyEmail
                 $transaction->account_id = $account->id;
                 $transaction->time = $emailExtract->time;
                 if ($totalBalance != 0) {
-                    $transaction->amount = ($clientBalance / $totalClubBalance) * $profits * $client->profits / 100;
+                    $transaction->amount = ($clientBalance / $totalClubBalance) * $profits * $client->commission / 100;
                     $moneyLeft -= $transaction->amount;
                     Transaction::fromExtract($transaction, $client);
                 }

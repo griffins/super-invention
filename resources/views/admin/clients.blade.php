@@ -69,12 +69,12 @@
                 </div>
                 <div class="col-2">
                     <label>% Profit to Receive</label>
-                    <input type="number" name="profits" value="{{ old('profits',$client->profits) }}"
+                    <input type="number" name="commission" value="{{ old('commission',$client->commission) }}"
                            class="form-control"
                            placeholder="Profit %">
-                    @if ($errors->has('profits'))
+                    @if ($errors->has('commission'))
                         <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('profits') }}</strong>
+                            <strong>{{ $errors->first('commission') }}</strong>
                         </span>
                     @endif
                 </div>

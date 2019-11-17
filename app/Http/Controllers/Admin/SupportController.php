@@ -257,13 +257,13 @@ class SupportController extends Controller
                     'name' => 'required',
                     'email' => 'required|email|unique:clients,id,' . $client->id,
                     'status' => 'required',
-                    'profits' => 'required|min:0:max:100',
+                    'commission' => 'required|min:0:max:100',
                 ];
 
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'account_id', 'email', 'notes', 'wallet', 'profits'));
+                $client->fill(request()->only('name', 'status', 'account_id', 'email', 'notes', 'commission'));
                 if (request('status') == 'suspended') {
                     cache()->forever('logout_' . $client->id, true);
                 }

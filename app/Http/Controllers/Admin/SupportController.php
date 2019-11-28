@@ -216,6 +216,10 @@ class SupportController extends Controller
                 $request->save();
                 $message = 'Deleted';
                 $request->client->notify(new TransactionRejected($request, request('reason')));
+            } else if (request('action') == 'dismiss') {
+                $request->status = 'dismissed';
+                $request->save();
+                $message = 'Dismissed';
             } else {
                 DB::beginTransaction();
                 $transaction = $request->apply(request('amount'), request('date'));

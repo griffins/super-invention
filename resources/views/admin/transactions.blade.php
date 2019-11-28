@@ -38,15 +38,21 @@
                 <td>
                     <div class="item-action dropdown">
                         <a href="javascript:void(0)" data-toggle="dropdown" class="icon" aria-expanded="false"><i
-                                    class="fe fe-more-vertical"></i></a>
+                                class="fe fe-more-vertical"></i></a>
                         <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
                              style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
                             <a data-name="{{$request->client->name}}" data-email="{{$request->client->email}}"
                                href="#" data-toggle="modal" data-target="#reject"
                                data-url="{{ route('support',['action' => 'reject','section' => 'requests','client' => $request->client,'request' => $request]) }}"
-                               class="dropdown-item"><i class="dropdown-icon fe fe-trash"></i> Reject </a>
+                               class="dropdown-item"><i class="dropdown-icon fe fe-trash"></i> Reject </a><a
+                                data-name="{{$request->client->name}}" data-email="{{$request->client->email}}"
+                                href="#" data-toggle="modal" data-target="#reject"
+                                data-url="{{ route('support',['action' => 'dismiss','section' => 'requests','client' => $request->client,'request' => $request]) }}"
+                                class="dropdown-item"><i class="dropdown-icon fe fe-delete"></i> Dismiss </a>
                             <a href="#" data-toggle="modal" data-target="#confirm"
-                               data-name="{{$request->client->name}}" data-amount="{{$request->amount}}" data-wallet="{{$request->wallet}}" data-type="{{ ucfirst( $request->operation) }}" data-txn="{{$request->transaction_id}}"
+                               data-name="{{$request->client->name}}" data-amount="{{$request->amount}}"
+                               data-wallet="{{$request->wallet}}" data-type="{{ ucfirst( $request->operation) }}"
+                               data-txn="{{$request->transaction_id}}"
                                data-url="{{ route('support',['action' => 'confirm','section' => 'requests','client' => $request->client,'request' => $request]) }}"
                                class="dropdown-item"><i class="dropdown-icon fe fe-check-circle"></i> Confirm </a>
                         </div>

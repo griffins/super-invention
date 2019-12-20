@@ -24,15 +24,19 @@ class ClientController extends Controller
 
     public function index(Client $client)
     {
-        $types = ['General', 'Dispute', 'Financial'];
-        $periods = (object)[
-            (object)[
-                'name' => 'Today',
-                'start' => now()->startOfDay(),
-                'end' => now()->endOfDay()],
-        ];
-        $account = Account::query()->findOrFail(cache('default_wallet'));
-        return view('client.profile', compact('client', 'periods', 'types', 'account'));
+        if (user()->role == 'admin' || user()->id == $client->id) {
+            $types = ['General', 'Dispute', 'Financial'];
+            $periods = (object)[
+                (object)[
+                    'name' => 'Today',
+                    'start' => now()->startOfDay(),
+                    'end' => now()->endOfDay()],
+            ];
+            $account = Account::query()->findOrFail(cache('default_wallet'));
+            return view('client.profile', compact('client', 'periods', 'types', 'account'));
+        } else {
+            abort(404);
+        }
     }
 
     public function profit()

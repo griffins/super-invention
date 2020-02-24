@@ -177,7 +177,7 @@
 
                             <div class="form-group" id="wallet_id">
                                 <label class="col-form-label">Your Wallet ID:</label>
-                                <input type="text" value="{{ $client->wallet }}" name="wallet_id" class="form-control">
+                                <input type="text" value="{{ $client->wallet }}" name="wallet" class="form-control">
                             </div>
 
 

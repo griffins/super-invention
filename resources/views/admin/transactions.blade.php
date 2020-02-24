@@ -18,6 +18,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Type</th>
+            <th>Wallet</th>
             <th>Amount</th>
             <th class="text-left">Date</th>
             <th class=""></th>
@@ -34,6 +35,7 @@
                 <td>{{$request->client->email}}</td>
                 <td>{{ ucfirst( $request->operation) }}</td>
                 <td>{{currency( $request->amount,true,8)}}</td>
+                <td>{{ $request->wallet }}</td>
                 <td class="text-left">{{$request->created_at->diffForHumans()}}</td>
                 <td>
                     <div class="item-action dropdown">

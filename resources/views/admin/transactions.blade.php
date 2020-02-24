@@ -34,8 +34,8 @@
                 <td><a href="{{ route('client', ['client' => $request->client]) }}"> {{$request->client->name}}</a></td>
                 <td>{{$request->client->email}}</td>
                 <td>{{ ucfirst( $request->operation) }}</td>
-                <td>{{currency( $request->amount,true,8)}}</td>
                 <td>{{ $request->wallet }}</td>
+                <td>{{currency( $request->amount,true,8)}}</td>
                 <td class="text-left">{{$request->created_at->diffForHumans()}}</td>
                 <td>
                     <div class="item-action dropdown">
